@@ -24,8 +24,7 @@ These functions perform the main computations:
 
 ### MEX
 
-Starting with version 2017a, Matlab introduces a new feature called *MEX*.  This feature allows to precompile code,
-which greatly increases the speed.  To generate the mex-file, do the following:
+The Matlab *MEX* (Matlab executable) feature allows to precompile code, which greatly increases the speed.  To generate the mex-file, do the following:
 
 ...
 
