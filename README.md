@@ -5,7 +5,7 @@ The code implements the admUI algorithm presented in [*Computing the Unique Info
 
 The repository contains two implementation:
 - an implementation in Python that works together with the Python package [dit](https://github.com/dit/)
-- an implementation in Mathlab
+- an implementation in Matlab
 
 ## Matlab
 
