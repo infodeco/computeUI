@@ -14,7 +14,7 @@ for ny=2:14
     d = ns+1;
     P = zeros(1,N);
     for i=1:ns
-     P(1+(i-1)*d)=1;
+        P(1+(i-1)*d)=1;
     end 
     %if min(P)<= 1/(1000*ns*ny*nz)
     %    P=P + 1/(1000*ns*ny*nz);
