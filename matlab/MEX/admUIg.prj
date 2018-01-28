@@ -1,5 +1,5 @@
 <deployment-project plugin="plugin.coder" plugin-version="R2016a">
-  <configuration build-checksum="403207285" file="/net/stdell/people7/pradeep/ToSync_________/UIGJP_latest_Datagen_admUI_folder/admUI______datagen/MEX_New/admUIg.prj" location="/net/stdell/people7/pradeep/ToSync_________/UIGJP_latest_Datagen_admUI_folder/admUI______datagen/MEX_New" name="admUIg" target="target.unifiedcoder" target-name="MATLAB Coder">
+  <configuration build-checksum="152958833" file="/net/stdell/people7/pradeep/ToSync_________/UIGJP_latest_Datagen_admUI_folder/admUI______datagen/MEX_admUIg/admUIg.prj" location="/net/stdell/people7/pradeep/ToSync_________/UIGJP_latest_Datagen_admUI_folder/admUI______datagen/MEX_admUIg" name="admUIg" target="target.unifiedcoder" target-name="MATLAB Coder">
     <profile key="profile.mex">
       <param.BuiltInstrumentedMex>false</param.BuiltInstrumentedMex>
       <param.RanInstrumentedMex>false</param.RanInstrumentedMex>
@@ -8,16 +8,16 @@
       <param.BuildFolder>option.BuildFolder.Project</param.BuildFolder>
       <param.SpecifiedBuildFolder />
       <param.SearchPaths />
-      <param.ResponsivenessChecks>true</param.ResponsivenessChecks>
+      <param.ResponsivenessChecks>false</param.ResponsivenessChecks>
       <param.ExtrinsicCalls>true</param.ExtrinsicCalls>
-      <param.IntegrityChecks>true</param.IntegrityChecks>
-      <param.SaturateOnIntegerOverflow>true</param.SaturateOnIntegerOverflow>
+      <param.IntegrityChecks>false</param.IntegrityChecks>
+      <param.SaturateOnIntegerOverflow>false</param.SaturateOnIntegerOverflow>
       <param.GlobalDataSyncMethod>option.GlobalDataSyncMethod.SyncAlways</param.GlobalDataSyncMethod>
       <param.EnableVariableSizing>true</param.EnableVariableSizing>
-      <param.DynamicMemoryAllocation>option.DynamicMemoryAllocation.Threshold</param.DynamicMemoryAllocation>
+      <param.DynamicMemoryAllocation>option.DynamicMemoryAllocation.Disabled</param.DynamicMemoryAllocation>
       <param.DynamicMemoryAllocationThreshold>65536</param.DynamicMemoryAllocationThreshold>
       <param.StackUsageMax>200000</param.StackUsageMax>
-      <param.FilePartitionMethod>option.FilePartitionMethod.MapMFileToCFile</param.FilePartitionMethod>
+      <param.FilePartitionMethod>option.FilePartitionMethod.SingleFile</param.FilePartitionMethod>
       <param.GenerateComments>true</param.GenerateComments>
       <param.MATLABSourceComments>false</param.MATLABSourceComments>
       <param.ReservedNameArray />
@@ -64,16 +64,11 @@
         <param.BuildFolder />
         <param.SpecifiedBuildFolder />
         <param.SearchPaths />
-        <param.ResponsivenessChecks />
         <param.ExtrinsicCalls />
-        <param.IntegrityChecks />
-        <param.SaturateOnIntegerOverflow />
         <param.GlobalDataSyncMethod />
         <param.EnableVariableSizing />
-        <param.DynamicMemoryAllocation />
         <param.DynamicMemoryAllocationThreshold />
         <param.StackUsageMax />
-        <param.FilePartitionMethod />
         <param.GenerateComments />
         <param.MATLABSourceComments />
         <param.ReservedNameArray />
@@ -724,7 +719,7 @@
       </unset>
     </profile>
     <param.objective>option.objective.c</param.objective>
-    <param.WorkflowStep>workflowSummary</param.WorkflowStep>
+    <param.WorkflowStep>generateCode</param.WorkflowStep>
     <param.TestSnippets>
       <item>testAdmUIg</item>
     </param.TestSnippets>
@@ -747,7 +742,7 @@
     <param.AutoInferUnboundedSizeThreshold>2048</param.AutoInferUnboundedSizeThreshold>
     <param.EnableFixedPointStep>false</param.EnableFixedPointStep>
     <param.EnableScreener>true</param.EnableScreener>
-    <param.AnnotationChecksum>4027767649</param.AnnotationChecksum>
+    <param.AnnotationChecksum>3970827652</param.AnnotationChecksum>
     <var.LegacyTarget />
     <var.MirrorOnOpen>false</var.MirrorOnOpen>
     <param.FixedPointEnabled>false</param.FixedPointEnabled>
@@ -756,13 +751,13 @@
     <param.unifiedParamStorage />
     <var.gc.lastOutputRoot>codegen/mex/admUIg</var.gc.lastOutputRoot>
     <var.gc.lastOutputType>MEX_FILE</var.gc.lastOutputType>
-    <var.gc.preBuildChecksum>403207285</var.gc.preBuildChecksum>
+    <var.gc.preBuildChecksum>152958833</var.gc.preBuildChecksum>
     <var.cfi.lastOutputRoot>codegen/mex/admUIg</var.cfi.lastOutputRoot>
-    <var.cfi.preBuildChecksum>1538355830</var.cfi.preBuildChecksum>
+    <var.cfi.preBuildChecksum>3711708794</var.cfi.preBuildChecksum>
     <var.lastCfiTestSnippet>testAdmUIg</var.lastCfiTestSnippet>
     <var.outdatedOnRestore>false</var.outdatedOnRestore>
-    <var.lastUserSourceChecksum>&lt;?xml version="1.0" encoding="UTF-8" standalone="yes"?&gt;&lt;checksum&gt;&lt;includedFiles&gt;&lt;file&gt;/net/stdell/people7/pradeep/ToSync_________/UIGJP_latest_Datagen_admUI_folder/admUI______datagen/MEX_New/admUIg.m&lt;/file&gt;&lt;/includedFiles&gt;&lt;value&gt;3646603217&lt;/value&gt;&lt;/checksum&gt;</var.lastUserSourceChecksum>
-    <var.sourceSetState>&lt;?xml version="1.0" encoding="UTF-8" standalone="yes"?&gt;&lt;sourceModel&gt;&lt;primarySourceFiles&gt;&lt;file&gt;/net/stdell/people7/pradeep/ToSync_________/UIGJP_latest_Datagen_admUI_folder/admUI______datagen/MEX_New/admUIg.m&lt;/file&gt;&lt;/primarySourceFiles&gt;&lt;fixedPointSourceFiles/&gt;&lt;fixedPointSourceRegistered&gt;false&lt;/fixedPointSourceRegistered&gt;&lt;fixedPointSourceSelected&gt;false&lt;/fixedPointSourceSelected&gt;&lt;/sourceModel&gt;</var.sourceSetState>
+    <var.lastUserSourceChecksum>&lt;?xml version="1.0" encoding="UTF-8" standalone="yes"?&gt;&lt;checksum&gt;&lt;includedFiles&gt;&lt;file&gt;/net/stdell/people7/pradeep/ToSync_________/UIGJP_latest_Datagen_admUI_folder/admUI______datagen/MEX_admUIg/admUIg.m&lt;/file&gt;&lt;/includedFiles&gt;&lt;value&gt;3646603217&lt;/value&gt;&lt;/checksum&gt;</var.lastUserSourceChecksum>
+    <var.sourceSetState>&lt;?xml version="1.0" encoding="UTF-8" standalone="yes"?&gt;&lt;sourceModel&gt;&lt;primarySourceFiles&gt;&lt;file&gt;/net/stdell/people7/pradeep/ToSync_________/UIGJP_latest_Datagen_admUI_folder/admUI______datagen/MEX_admUIg/admUIg.m&lt;/file&gt;&lt;/primarySourceFiles&gt;&lt;fixedPointSourceFiles/&gt;&lt;fixedPointSourceRegistered&gt;false&lt;/fixedPointSourceRegistered&gt;&lt;fixedPointSourceSelected&gt;false&lt;/fixedPointSourceSelected&gt;&lt;/sourceModel&gt;</var.sourceSetState>
     <param.forceMexBuild>false</param.forceMexBuild>
     <param.configImportActive>false</param.configImportActive>
     <var.boundToGui>true</var.boundToGui>
@@ -896,7 +891,7 @@
     </unset>
     <fileset.entrypoints>
       <file custom-data-expanded="false" value="${PROJECT_ROOT}/admUIg.m">
-        <Marker>1517154927562</Marker>
+        <Marker>1517166403909</Marker>
       </file>
     </fileset.entrypoints>
     <fileset.testbench>
@@ -933,7 +928,7 @@
       </file>
     </fileset.inputtypes>
     <build-deliverables>
-      <file location="/net/stdell/people7/pradeep/ToSync_________/UIGJP_latest_Datagen_admUI_folder/admUI______datagen/MEX_New" name="admUIg_mex.mexa64" optional="false">/net/stdell/people7/pradeep/ToSync_________/UIGJP_latest_Datagen_admUI_folder/admUI______datagen/MEX_New/admUIg_mex.mexa64</file>
+      <file location="/net/stdell/people7/pradeep/ToSync_________/UIGJP_latest_Datagen_admUI_folder/admUI______datagen/MEX_admUIg" name="admUIg_mex.mexa64" optional="false">/net/stdell/people7/pradeep/ToSync_________/UIGJP_latest_Datagen_admUI_folder/admUI______datagen/MEX_admUIg/admUIg_mex.mexa64</file>
     </build-deliverables>
     <workflow />
     <matlab>
