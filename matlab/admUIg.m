@@ -1,8 +1,11 @@
 function [UI,Q] = admUIg(Psy, Psz, conf)
-% admUI computes the Unique Information for the marginals P_SY and P_SZ
+% admUIg computes the Unique Information for the marginals P_SY and P_SZ
 % Inputs: Psy is a table of size S x Y and Psz is a table of size S x Z
 % Outputs: UI is the unique information (natural logarithm) and Q is the
 % minimizing distribution, which is a table of size S x Y x Z
+
+% admUIg supports three stopping criterias for the inner I-projection step
+
 % Guido Montufar, 12 May 2017
 
     S = size(Psy,1); 
@@ -14,7 +17,7 @@ function [UI,Q] = admUIg(Psy, Psz, conf)
         conf.innerstop = 2;           % stopping criterion
     end
     conf.eps = 1e-6; % / (100*S*Y*Z); % accuracy 
-    conf.maxiter = 25000;             % maximum number of iterations    
+    conf.maxiter = 1000;              % maximum number of iterations (same for both outer and inner loop)    
     
     % make strictly positive
     if 1==1 
@@ -28,9 +31,13 @@ function [UI,Q] = admUIg(Psy, Psz, conf)
         end
     end
       
+    % initialization
     Ps = sum(Psy,2);                
-    Ryz = sum(Psy,1)' * sum(Psz,1); % initialization
-    oldQyz_s = ones(S,Y,Z)/(S*Y*Z); % initialization
+    Ryz = sum(Psy,1)' * sum(Psz,1); 
+    oldQyz_s = ones(S,Y,Z)/(S*Y*Z); 
+    %oldQyz_s = coder.nullcopy(ones(S,Y,Z)/(S*Y*Z)); 
+    Qyz_s = oldQyz_s;
+    Q = oldQyz_s;
     
     % optimization loop 
     for i = 1:conf.maxiter
@@ -110,6 +117,7 @@ function [Qyzs] = Iproj(Psy,Psz,s,Ryz,conf)
 end
 
 function [I] = MIsy_z(Q)
+% Compute the conditional mutual information I_Q(S;Y|Z)
     Qz = squeeze(sum(sum(Q,1),2));
     Z = numel(Qz);
     I = 0; 

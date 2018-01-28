@@ -1,10 +1,14 @@
 % Generate the (1) UI and (2) wall-clock computation time vectors for comparing four different methods: 
 % adm, fmincon with gradient and Hessian, fimincon with gradient only, and fmincon blackbox.
-% The admUI_mex executable is generated using Matlab 2017a.
+% The admUI_mex executable is to be generated using Matlab 2017a.
+
+% Data for Fig. 2 (top panel)
 clear all;
 
+addpath(genpath('../'))
+
 % pregenerated 300 distributions
-load('dataPy.mat')
+load('../../data/dataPy.mat')
 
 ns = 2; nz = 2;
 nymax = 10;
@@ -58,8 +62,6 @@ for ny=2:nymax
     end
 end
 
-%UI(:,1,:)=[];
-%elapsedTime(:,1,:)=[];
 % rows index the different methods (each row is plotted against ny); different such plots for the different methods
 mean_UIvy = mUI';            
 mean_UIvy(:,1) = []
