@@ -30,7 +30,7 @@ pid = algorithms.pid_broja(d, ['X', 'Y'], 'S')
 - test_admUI.py: wrapping function comparing the admUI algorithm with the Frank-Wolfe implementation in the [dit](https://github.com/dit/) package for some easy examples.
 - test_admUI_cvxUI_dataPs.py, test_dit_dataPs.py: wrapping functions for generating datapoints to compare the admUI with an implementation [cvxopt_solve](https://github.com/Abzinger/BROJA-Bivariate-Partial_Information_Decomposition/blob/master/Python/cvxopt_solve.py) using the python interior-point solver [CVXOPT](http://cvxopt.org/) and the Frank-Wolfe implementation in the [dit](https://github.com/dit/) package.
 
-This function perform the main computation:
+This function performs the main computation:
 - admUI.py: the alternating divergence minimization algorithm for computing the unique information (admUI) proposed in Banerjee, et al., 2017. 
 
 ## Matlab
@@ -45,7 +45,7 @@ P  = [1 1 1 0 0 0 0 1]; P = P/sum(P);
 
 Pzys = reshape(P,nz,ny,ns); Psy = squeeze(sum(Pzys,1))'; Psz = squeeze(sum(Pzys,2))';
 
-[UI,Q]=admUIg(Psy, Psz)
+[UI,Q] = admUIg(Psy, Psz)
 
 ### Files
 
