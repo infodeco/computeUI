@@ -1,4 +1,4 @@
-# The file has suitably modified (to make it self-contained) from its original version to be found here: https://github.com/Abzinger/BROJA-Bivariate-Partial_Information_Decomposition/blob/master/Python/cvxopt_solve.py 
+# The file has suitably been modified (to make it self-contained) from its original version to be found here: https://github.com/Abzinger/BROJA-Bivariate-Partial_Information_Decomposition/blob/master/Python/cvxopt_solve.py 
 import numpy
 import time
 # CVXOPT is an interior-point solver which reliably attains high accuracy for small and medium scale problems
