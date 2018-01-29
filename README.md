@@ -27,8 +27,8 @@ pid = algorithms.pid_broja(d, ['X', 'Y'], 'S')
 
 ### Files
 
-- test_admUI.py: wrapping function comparing the admUI algorithm with the Frank-Wolfe implementation in the [dit](https://github.com/dit/) package for some easy examples.
-- test_admUI_cvxUI_dataPs.py, test_dit_dataPs.py: wrapping functions for generating datapoints to compare the admUI with an implementation [cvxopt_solve](https://github.com/Abzinger/BROJA-Bivariate-Partial_Information_Decomposition/blob/master/Python/cvxopt_solve.py) using the python interior-point solver [CVXOPT](http://cvxopt.org/) and the Frank-Wolfe implementation in the [dit](https://github.com/dit/) package.
+- test_admUI.py: testcase comparing the admUI algorithm with the Frank-Wolfe implementation in the [dit](https://github.com/dit/) package for some easy examples.
+- test_admUI_cvxUI_dataPs.py, test_dit_dataPs.py: testcases for generating datapoints to compare the admUI with an implementation [cvxopt_solve](https://github.com/Abzinger/BROJA-Bivariate-Partial_Information_Decomposition/blob/master/Python/cvxopt_solve.py) using the python interior-point solver [CVXOPT](http://cvxopt.org/) and the Frank-Wolfe implementation in the [dit](https://github.com/dit/) package.
 
 This function performs the main computation:
 - admUI.py: the alternating divergence minimization algorithm for computing the unique information (admUI) proposed in Banerjee, et al., 2017. 
@@ -45,13 +45,13 @@ P  = [1 1 1 0 0 0 0 1]; P = P/sum(P);
 
 Pzys = reshape(P,nz,ny,ns); Psy = squeeze(sum(Pzys,1))'; Psz = squeeze(sum(Pzys,2))';
 
-[UI,Q] = admUIg(Psy, Psz)
+[UI, Q] = admUIg(Psy, Psz)
 
 ### Files
 
-- test_dataPs.m, test_dataPy.m, test_dataPz.m: wrapping functions that compares the admUI algorithm with fmincon from the Matlab Optimization Toolbox (algorithm: interior-point) when including the gradient and Hessian, only the gradient, and when including none.
-- copytest.m: wrapping function for comparing the admUI algorithm and fmincon for the Copy example, vis-a-vis two different stopping criteria: a heuristic and a rigorous one.
-- test_admUI_accn_eps.m: wrapping function comparing the convergence of an accelerated version of the admUI algorithm with the original, for a given accuracy (currently tested only for binary-valued S, Y, Z).
+- test_dataPs.m, test_dataPy.m, test_dataPz.m: testcases comparing the admUI algorithm with fmincon from the Matlab Optimization Toolbox (algorithm: interior-point) with options for including the gradient and Hessian.
+- copytest.m: testcase comparing the admUI algorithm and fmincon for the Copy example, vis-a-vis two different stopping criteria: a heuristic and a rigorous one.
+- test_admUI_accn_eps.m: testcase comparing the convergence of an accelerated version of the admUI algorithm with the original, for a given accuracy (currently tested only for binary-valued S, Y, Z).
 
 These functions perform the main computations:
 - admUIg.m: the alternating divergence minimization algorithm for computing the unique information (admUI) proposed in Banerjee, et al., 2017. Supports two different stopping criterias: a heuristic and a rigorous one.
@@ -59,7 +59,7 @@ These functions perform the main computations:
 
 ### MEX
 
-The Matlab *MEX* (Matlab executable) feature allows to precompile code, which greatly increases the speed. The MEX files are generated and tested in Matlab 2017a. 
+The Matlab *MEX* (Matlab executable) feature allows to precompile code, which greatly increases the speed. The MEX files are generated and tested in Matlab 2017a.  
 
 To generate the MEX function admUI_mex from the Matlab function admUI, do the following:
 - Open the included MATLAB Coder project file admUI.prj in computeUI/matlab/MEX/ to specify the various code generation parameters like the sizes and data types of inputs.
