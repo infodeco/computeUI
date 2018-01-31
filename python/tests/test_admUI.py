@@ -1,3 +1,5 @@
+import sys
+sys.path.insert(0, '../')
 from computeUI import computeQUI
 from dit import *
 import time
