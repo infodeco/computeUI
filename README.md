@@ -9,36 +9,41 @@ The repository contains two implementation:
 
 ## Python
 
-The Python implementation was tested with Python 3.4.2.  It can be used standalone, plus there are wrapper functions that allow to work with probability distributions generated using [dit](https://github.com/dit/)
+The Python implementation requires to have [`numpy`](http://www.numpy.org) installed.  It was tested with Python 3.4.2.  It can be used standalone, plus there are wrapper functions that allow to work with probability distributions generated using [`dit`](https://github.com/dit/).
+
+### Installation and Files
+
+To install, make sure sure that Python finds the following file (e.g. by copying the file into the python search path or
+by amending `sys.path`):
+- `admUI.py`: This file contains the implementation of the alternating divergence minimization algorithm for computing the unique information (admUI).  It also contains wrapper functions that allow to work with probability distributions generated using [`dit`](https://github.com/dit/).
+
+The following files contain tests and examples:
+- `test_admUI.py`: testcase comparing the admUI algorithm with the Frank-Wolfe implementation in the [dit](https://github.com/dit/) package for some easy examples.
+- `test_admUI_cvxUI_dataPs.py`, `test_dit_dataPs.py`: testcases for generating datapoints to compare the admUI with an implementation [cvxopt_solve](https://github.com/Abzinger/BROJA-Bivariate-Partial_Information_Decomposition/blob/master/Python/cvxopt_solve.py) using the python interior-point solver [CVXOPT](http://cvxopt.org/) and the Frank-Wolfe implementation in the [dit](https://github.com/dit/) package.
 
 ### An easy example: The AND distribution S = AND(X,Y)
 
+The following code prepares the joint distribution of the AND example, using `dit`:
+
 ```python
+import admUI
+import dit
 d = dit.Distribution(['000', '001', '010', '111'], [1. / 4] * 4) 
 d.set_rv_names('SXY')
 ```
 
-#### admUI algorithm 
+The following code computes the unique information of X using the admUI algorithm:
 
 ```python
 Q = computeQUI(distSXY = d, DEBUG = True)
 UIX = dit.shannon.conditional_entropy(Q, 'S', 'Y') + dit.shannon.conditional_entropy(Q, 'X', 'Y') - dit.shannon.conditional_entropy(Q, 'SX', 'Y')
 ```
 
-#### Frank-Wolfe algorithm in the `dit` package
+Alternatively, the `dit` package can be used to compute the same quantity:
 
 ```python
 pid = algorithms.pid_broja(d, ['X', 'Y'], 'S') 
 ```
-
-### Files
-
-This function performs the main computation:
-- `admUI.py`: the alternating divergence minimization algorithm for computing the unique information (admUI). 
-
-The following files contain tests and examples:
-- `test_admUI.py`: testcase comparing the admUI algorithm with the Frank-Wolfe implementation in the [dit](https://github.com/dit/) package for some easy examples.
-- `test_admUI_cvxUI_dataPs.py`, `test_dit_dataPs.py`: testcases for generating datapoints to compare the admUI with an implementation [cvxopt_solve](https://github.com/Abzinger/BROJA-Bivariate-Partial_Information_Decomposition/blob/master/Python/cvxopt_solve.py) using the python interior-point solver [CVXOPT](http://cvxopt.org/) and the Frank-Wolfe implementation in the [dit](https://github.com/dit/) package.
 
 ## Matlab
 
