@@ -30,17 +30,17 @@ def computeQUI_numpy(PXgSa, PYgSa, PS, eps = 1e-7, DEBUG = False, IPmethod = "IS
             else:
                 Ip, xindices, yindices = Iproj_tech_GIS(PXgSa[:, s], PYgSa[:, s], RXYa, eps = eps2, DEBUG = DEBUG)
             Ip = Ip.reshape(-1)
-            if (numpy.amin(QXYgSa[outer(xindices, yindices), s]) <= 0.):
+            if (numpy.amin(QXYgSa[numpy.outer(xindices, yindices), s]) <= 0.):
                 diffs = 2.
             else:
-                diffs = numpy.amax(Ip / QXYgSa[outer(xindices, yindices), s])
+                diffs = numpy.amax(Ip / QXYgSa[numpy.outer(xindices, yindices), s])
             if (diffs > diff):
                 diff = diffs
 
-            QXYgSa[outer(xindices, yindices), s] = Ip
+            QXYgSa[numpy.outer(xindices, yindices), s] = Ip
 
         ##### Step 2
-        RXYa = dot(QXYgSa.reshape(nXY, nS), PS).reshape(nX, nY)
+        RXYa = numpy.dot(QXYgSa.reshape(nXY, nS), PS).reshape(nX, nY)
         if (diff - 1. < eps):
             break
         # else:
@@ -52,7 +52,7 @@ def computeQUI_numpy(PXgSa, PYgSa, PS, eps = 1e-7, DEBUG = False, IPmethod = "IS
         print("Warning: Maximum number of iterations reached in outer loop.")
 
     QSXYa = (QXYgSa * PS[:, 0]).transpose((2, 0, 1))
-    QSXYa = QSXYa.reshape(-1)
+    # QSXYa = QSXYa.reshape(-1)
     return QSXYa
     
 
@@ -70,7 +70,7 @@ def Iproj_tech_GIS(PXgsa, PYgsa, RXYa, eps = 1e-9, DEBUG = False):
     nXi = sum(xindices)
     nYi = sum(yindices)
     # b = RXYa.copy()
-    b = RXYa[outer(xindices, yindices)].reshape(nXi, nYi)
+    b = RXYa[numpy.outer(xindices, yindices)].reshape(nXi, nYi)
     rangeXb = range(nXi)
     rangeYb = range(nYi)
 
@@ -101,13 +101,13 @@ def Iproj_tech_GIS(PXgsa, PYgsa, RXYa, eps = 1e-9, DEBUG = False):
                 #                 diff2 = facxy
 
         b *= factor
-        diff2 = amax(factor)
+        diff2 = numpy.amax(factor)
         if (diff2 < 1. + eps):
             break
         if (it2 + 1 == maxiter2):
             print("Warning: Maximum number of iterations reached in inner loop.")
 
-#            print(b.reshape(-1) / QXYgSa[outer(xindices, yindices), s])
+#            print(b.reshape(-1) / QXYgSa[numpy.outer(xindices, yindices), s])
 
     # if DEBUG:
     #     print("it2: ", it2)
@@ -127,7 +127,7 @@ def Iproj_tech_IS(PXgsa, PYgsa, RXYa, eps = 1e-9, DEBUG = False):
     nXi = sum(xindices)
     nYi = sum(yindices)
     # b = RXYa.copy()
-    b = RXYa[outer(xindices, yindices)].reshape(nXi, nYi)
+    b = RXYa[numpy.outer(xindices, yindices)].reshape(nXi, nYi)
     rangeXb = range(nXi)
     rangeYb = range(nYi)
 
@@ -138,13 +138,13 @@ def Iproj_tech_IS(PXgsa, PYgsa, RXYa, eps = 1e-9, DEBUG = False):
         factory = PYgsa[yindices] / sum(b, 0)
         b *= factory[numpy.newaxis, :]
 
-        diff2 = amax(factorx) * amax(factory)
+        diff2 = numpy.amax(factorx) * numpy.amax(factory)
         if (diff2 < 1. + eps):
             break
         if (it2 + 1 == maxiter2):
             print("Warning: Maximum number of iterations reached in inner loop.")
 
-#            print(b.reshape(-1) / QXYgSa[outer(xindices, yindices), s])
+#            print(b.reshape(-1) / QXYgSa[numpy.outer(xindices, yindices), s])
 
     # if DEBUG:
     #     print("it2: ", it2)
