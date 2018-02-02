@@ -9,11 +9,11 @@ The repository contains two implementation:
 
 ## Python
 
-The Python implementation requires to have [`numpy`](http://www.numpy.org) installed.  It was tested with Python 3.4.2.  It can be used standalone, plus there are wrapper functions that allow to work with probability distributions generated using [`dit`](https://github.com/dit/).
+The Python implementation requires to have [`numpy`](http://www.numpy.org) installed.  It can be used standalone, plus there are wrapper functions that allow to work with probability distributions generated using [`dit`](https://github.com/dit/) (version 1.0.0.dev6). The standalone version was tested with Python versions 3.4.2 and 2.7.9. We used [`dit`] version 1.0.0.dev6.
 
 ### Installation and Files
 
-To install, make sure sure that Python finds the following file (e.g. by copying the file into the python search path or
+To install, make sure that Python finds the following file (e.g. by copying the file into the python search path or
 by amending `sys.path`):
 - `admUI.py`: This file contains the implementation of the alternating divergence minimization algorithm for computing the unique information (admUI).  It also contains wrapper functions that allow to work with probability distributions generated using [`dit`](https://github.com/dit/).
 
