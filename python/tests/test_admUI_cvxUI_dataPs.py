@@ -39,29 +39,29 @@ for ns in xrange(1,nsmax):
     print("--------------- ns= %s ---------------" %(ns+1))
     for i in xrange(0,ndist):
         Pt = npy[:,i,ns]
-	P  = Pt[Pt!=0]
-	Ps = P.reshape(nz+1,ny+1,ns+1)
-	d = Distribution.from_ndarray(Ps)
+        P  = Pt[Pt!=0]
+        Ps = P.reshape(nz+1,ny+1,ns+1)
+        d = Distribution.from_ndarray(Ps)
         d.set_rv_names('SXY')
-	print(i)
-	
-	# admUI
-	start_time = time.time()
-	Q = computeQUI(distSXY = d, DEBUG = True)
+        print(i)
+    
+        # admUI
+        start_time = time.time()
+        Q = computeQUI(distSXY = d, DEBUG = True)
         UIX = dit.shannon.conditional_entropy(Q, 'S', 'Y') + dit.shannon.conditional_entropy(Q, 'X', 'Y') - dit.shannon.conditional_entropy(Q, 'SX', 'Y')
-	lapsed_time = time.time() - start_time
-	UIv[i,ns] = UIX
-	ltimev[i,ns] = lapsed_time 
-	print("admUI = %.15f" %UIX, "      time = %.15f" %lapsed_time)
+        lapsed_time = time.time() - start_time
+        UIv[i,ns] = UIX
+        ltimev[i,ns] = lapsed_time 
+        print("admUI = %.15f" %UIX, "      time = %.15f" %lapsed_time)
 
-	# cvxopt
-	pdf=dict(zip(d.outcomes, d.pmf))
-	start_timec = time.time()
-	UIXc=solve_PDF(pdf)
-	lapsed_timec = time.time() - start_timec
-	UIcv[i,ns] = UIXc
-	ltimecv[i,ns] = lapsed_timec 
-	print("cvxUI = %.15f" %UIXc, "      time = %.15f" %lapsed_timec)
+        # cvxopt
+        pdf=dict(zip(d.outcomes, d.pmf))
+        start_timec = time.time()
+        UIXc=solve_PDF(pdf)
+        lapsed_timec = time.time() - start_timec
+        UIcv[i,ns] = UIXc
+        ltimecv[i,ns] = lapsed_timec 
+        print("cvxUI = %.15f" %UIXc, "      time = %.15f" %lapsed_timec)
 
 np.set_printoptions(precision=15)
 print("-------------------- admUI --------------------")
