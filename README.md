@@ -9,7 +9,7 @@ The repository contains two implementation:
 
 ## Python
 
-The Python implementation requires to have [`numpy`](http://www.numpy.org) installed.  It can be used standalone, plus there are wrapper functions that allow to work with probability distributions generated using [`dit`](https://github.com/dit/) (version 1.0.0.dev6). The standalone version was tested with Python versions 3.4.2 and 2.7.9. We used [`dit`] version 1.0.0.dev6.
+The Python implementation requires to have [`numpy`](http://www.numpy.org) installed.  It can be used standalone, plus there are wrapper functions that allow to work with probability distributions generated using [`dit`](https://github.com/dit/) (version 1.0.0.dev6). The standalone version was tested with Python versions 3.4.2 and 2.7.9.
 
 ### Installation and Files
 
