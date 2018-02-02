@@ -42,30 +42,30 @@ for ns in xrange(1,nsmax):
     print("--------------- ns= %s ---------------" %(ns+1))
     for i in xrange(0,ndist):
         Pt = npy[:,i,ns]
-	P  = Pt[Pt!=0]
-	Ps = P.reshape(nz+1,ny+1,ns+1)
-	d = Distribution.from_ndarray(Ps)
+        P = Pt[Pt!=0]
+        Ps = P.reshape(nz+1,ny+1,ns+1)
+        d = Distribution.from_ndarray(Ps)
         d.set_rv_names('SXY')
-	print(i)
-	
+        print(i)
+    
         try:
             pid = algorithms.pid_broja(d, ['X', 'Y'], 'S')
         except dit.exceptions.ditException:
-	    print("ditException: P = ", P, ", ns=ny=nz=", ns+1, ", i=", i)
+            print("ditException: P = ", P, ", ns=ny=nz=", ns+1, ", i=", i)
             dit_errorcnt = dit_errorcnt+1
             UIv[i,ns] = 0
-	    ltimev[i,ns] = 0  
+            ltimev[i,ns] = 0  
             UIpv[i,ns] = 0
-	    ltimepv[i,ns] = 0  
-	    continue
+            ltimepv[i,ns] = 0  
+            continue
         else:
-	    start_timep = time.time()
+            start_timep = time.time()
             pid = algorithms.pid_broja(d, ['X', 'Y'], 'S')
-	    UIXp = pid.U0
-	    lapsed_timep = time.time() - start_timep
-	    UIpv[i,ns] = UIXp
-	    ltimepv[i,ns] = lapsed_timep 
-	    print("ditUI = %.15f" %UIXp, "      time = %.15f" %lapsed_timep)
+            UIXp = pid.U0
+            lapsed_timep = time.time() - start_timep
+            UIpv[i,ns] = UIXp
+            ltimepv[i,ns] = lapsed_timep 
+            print("ditUI = %.15f" %UIXp, "      time = %.15f" %lapsed_timep)
 
 np.set_printoptions(precision=15)
 print("-------------------- ditUI --------------------")
