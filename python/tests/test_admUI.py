@@ -1,6 +1,7 @@
+from __future__ import print_function
 import sys
 sys.path.insert(0, '../')
-from computeUI import computeQUI
+from admUI import computeQUI
 from dit import *
 import time
 
@@ -44,12 +45,12 @@ SI3 = dit.shannon.entropy(Q, 'S') + dit.shannon.entropy(Q, 'X') + dit.shannon.en
 CI = dit.shannon.mutual_information(d, 'S', 'XY') - UIX - UIY - SI
 CIQ = dit.shannon.mutual_information(Q, 'S', 'XY') - UIX - UIY - SI
 
-print("CI_Q: ", CIQ)
+#print("UIX: ", UIX)
 # print(" CI : ", CI)
 # print("UI_X: ", UIX)
 # print("UI_Y: ", UIY)
 # print(" SI : ", SI)
-print("PID(R=", SI, ", U0=", UIX, ", U1=", UIY, ", S=", CI, sep = '')
+print("PID(R=", SI, ", U0=", UIX, ", U1=", UIY, ", S=", CI, ")", sep = '')
 
 start_time = time.time()
 pid = algorithms.pid_broja(d, ['X', 'Y'], 'S')
