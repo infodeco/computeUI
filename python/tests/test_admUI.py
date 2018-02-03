@@ -2,9 +2,12 @@ from __future__ import print_function
 import sys
 sys.path.insert(0, '../')
 from admUI import computeQUI
-from dit import *
+from admUI_numpy import computeQUI_numpy
+import numpy as np
+import dit
 import time
 
+# Examples with probability distributions generated using dit
 d1 = dit.Distribution(['000', '011', '101', '110'], [1. / 4] * 4) # XOR
 d2 = dit.Distribution(['000', '011', '101', '110'], [0.1, 0.2, 0.3, 0.4]) # perturbed XOR
 d3 = dit.Distribution(['000', '001', '010', '111'], [1. / 4] * 4) # AND
@@ -24,16 +27,13 @@ d12 = dit.Distribution(['000', '010', '020', '102', '110', '122'],
     [0.0869196091623, 0.0218631235533, 0.133963681059, 0.164924698739, 0.429533105427, 0.16279578206])
 
 d = d12
-
 d.set_rv_names('SXY')
-
 print(d)
 
+## admUI
 start_time = time.time()
 Q = computeQUI(distSXY = d, DEBUG = True)
 print("--- %s seconds ---" % (time.time() - start_time))
-
-print(Q)
 UIX = dit.shannon.conditional_entropy(Q, 'S', 'Y') + dit.shannon.conditional_entropy(Q, 'X', 'Y') - dit.shannon.conditional_entropy(Q, 'SX', 'Y')
 UIX2 = dit.shannon.entropy(Q, 'SY') + dit.shannon.entropy(Q, 'XY') - dit.shannon.entropy(Q, 'SXY') - dit.shannon.entropy(Q, 'Y')
 # print(abs(UIX - UIX2) < 1e-10)
@@ -41,18 +41,29 @@ UIY = dit.shannon.conditional_entropy(Q, 'S', 'X') + dit.shannon.conditional_ent
 SI = dit.shannon.mutual_information(Q, 'S', 'X') - UIX
 SI2 = dit.shannon.entropy(Q, 'S') + dit.shannon.entropy(Q, 'X') - dit.shannon.entropy(Q, 'SX') - UIX
 SI3 = dit.shannon.entropy(Q, 'S') + dit.shannon.entropy(Q, 'X') + dit.shannon.entropy(Q, 'Y') - dit.shannon.entropy(Q, 'SX') - dit.shannon.entropy(Q, 'SY') - dit.shannon.entropy(Q, 'XY') + dit.shannon.entropy(Q, 'SXY')
-
 CI = dit.shannon.mutual_information(d, 'S', 'XY') - UIX - UIY - SI
 CIQ = dit.shannon.mutual_information(Q, 'S', 'XY') - UIX - UIY - SI
-
-#print("UIX: ", UIX)
-# print(" CI : ", CI)
-# print("UI_X: ", UIX)
-# print("UI_Y: ", UIY)
-# print(" SI : ", SI)
 print("PID(R=", SI, ", U0=", UIX, ", U1=", UIY, ", S=", CI, ")", sep = '')
+print(Q)
 
+## pid 
 start_time = time.time()
-pid = algorithms.pid_broja(d, ['X', 'Y'], 'S')
+pid = dit.algorithms.pid_broja(d, ['X', 'Y'], 'S')
 print("--- %s seconds ---" % (time.time() - start_time))
 print(pid)
+
+# Example d12 without using dit
+ns=2
+nx=3
+ny=2
+P = np.array([0.0869196091623, 0, 0.0218631235533, 0, 0.133963681059, 0, 0, 0.164924698739, 0.429533105427, 0, 0, 0.16279578206])
+Psxy = np.reshape(P,[ns,nx,ny])
+Psx = np.sum(Psxy,axis=2)    
+Psy = np.sum(Psxy,axis=1)
+PS = np.sum(Psx,axis=1)
+PXgS = np.divide(np.transpose(Psx), PS)
+PYgS = np.divide(np.transpose(Psy), PS)
+PS = PS.reshape((-1, 1))
+Q = computeQUI_numpy(PXgS, PYgS, PS)
+print(Q)
+
