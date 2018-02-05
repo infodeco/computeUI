@@ -1,4 +1,5 @@
 import numpy
+from numpy import *
 
 maxiter = 1000
 maxiter2 = maxiter
