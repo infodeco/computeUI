@@ -2,12 +2,13 @@ import dit
 import numpy
 from admUI_numpy import computeQUI_numpy 
 
-#maxiter = 1000
-#maxiter2 = maxiter
+maxiter = 1000
+maxiter2 = maxiter
 
 def computeQUI(distSXY, eps = 1e-7, DEBUG = False, IPmethod = "IS"):
     '''
     Compute an optimizer Q
+
     distSXY : A joint distribution of three variables (as a dit.Distribution).
     eps     : The precision of the outer loop.  The precision of the inner loop will be eps / (20 |S|).
     DEBUG   : Print output for debugging.

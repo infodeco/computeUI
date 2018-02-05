@@ -9,11 +9,11 @@ The repository contains two implementation:
 
 ## Python
 
-The Python implementation requires to have [`numpy`](http://www.numpy.org) installed.  It can be used standalone, plus there are wrapper functions that allow to work with probability distributions generated using [`dit`](https://github.com/dit/) (version 1.0.0.dev6). The standalone version was tested with Python versions 3.4.2 and 2.7.9.
+The Python implementation requires to have [`numpy`](http://www.numpy.org) installed.  It was tested with Python 3.4.2.  It can be used standalone, plus there are wrapper functions that allow to work with probability distributions generated using [`dit`](https://github.com/dit/).
 
 ### Installation and Files
 
-To install, make sure that Python finds the following file (e.g. by copying the file into the python search path or
+To install, make sure sure that Python finds the following file (e.g. by copying the file into the python search path or
 by amending `sys.path`):
 - `admUI.py`: This file contains the implementation of the alternating divergence minimization algorithm for computing the unique information (admUI).  It also contains wrapper functions that allow to work with probability distributions generated using [`dit`](https://github.com/dit/).
 
@@ -21,7 +21,7 @@ The following files contain tests and examples:
 - `test_admUI.py`: testcase comparing the admUI algorithm with the Frank-Wolfe implementation in the [dit](https://github.com/dit/) package for some easy examples.
 - `test_admUI_cvxUI_dataPs.py`, `test_dit_dataPs.py`: testcases for generating datapoints to compare the admUI with an implementation [cvxopt_solve](https://github.com/Abzinger/BROJA-Bivariate-Partial_Information_Decomposition/blob/master/Python/cvxopt_solve.py) using the python interior-point solver [CVXOPT](http://cvxopt.org/) and the Frank-Wolfe implementation in the [dit](https://github.com/dit/) package.
 
-### An easy example: The AND distribution S = AND(X,Y)
+### Example: The AND distribution S = AND(X,Y) using `dit`
 
 The following code prepares the joint distribution of the AND example, using `dit`:
 
@@ -35,15 +35,32 @@ d.set_rv_names('SXY')
 The following code computes the unique information of X using the admUI algorithm:
 
 ```python
-Q = computeQUI(distSXY = d, DEBUG = True)
-UIX = dit.shannon.conditional_entropy(Q, 'S', 'Y') + dit.shannon.conditional_entropy(Q, 'X', 'Y') - dit.shannon.conditional_entropy(Q, 'SX', 'Y')
+Q = admUI.computeQUI(distSXY = d, DEBUG = True)
+print(Q)
+dit.shannon.conditional_entropy(Q, 'S', 'Y') + dit.shannon.conditional_entropy(Q, 'X', 'Y') - dit.shannon.conditional_entropy(Q, 'SX', 'Y')
 ```
 
 Alternatively, the `dit` package can be used to compute the same quantity:
 
 ```python
-pid = algorithms.pid_broja(d, ['X', 'Y'], 'S') 
+dit.algorithms.pid_broja(d, ['X', 'Y'], 'S') 
 ```
+
+### Example: The AND distribution with `numpy`
+
+The function `computeQUI_numpy` in `admUI_numpy.py` expects three inputs: the conditional distributions of X given S and Y given S and the marginal distribution of S.  The inputs have to be `numpy` arrays.
+
+```python
+import admUI_numpy
+import numpy
+PXgS = numpy.array([[ 2./3,  0.],
+                    [ 1./3,  1.]])
+PYgS = PXgS
+PS = numpy.array([[ 0.75], [ 0.25]])
+Q = admUI_numpy.computeQUI_numpy(PXgS, PYgS, PS)
+```
+
+The output is a threedimensional `numpy` array of the joint distribution.
 
 ## Matlab
 
