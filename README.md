@@ -13,9 +13,10 @@ The Python implementation requires to have [`numpy`](http://www.numpy.org) insta
 
 ### Installation and Files
 
-To install, make sure sure that Python finds the following file (e.g. by copying the file into the python search path or
+To install, make sure sure that Python finds the following files (e.g. by copying the file into the python search path or
 by amending `sys.path`):
-- `admUI.py`: This file contains the implementation of the alternating divergence minimization algorithm for computing the unique information (admUI).  It also contains wrapper functions that allow to work with probability distributions generated using [`dit`](https://github.com/dit/).
+- `admUI_numpy.py`: This file contains the function `computeQUI_numpy` that implements the alternating divergence minimization algorithm for computing the unique information (admUI).
+- `admUI.py`: This file contains the wrapper function `computeQUI` that allows to work with probability distributions generated using [`dit`](https://github.com/dit/).
 
 The following files contain tests and examples:
 - `test_admUI.py`: testcase comparing the admUI algorithm with the Frank-Wolfe implementation in the [dit](https://github.com/dit/) package for some easy examples.
@@ -35,7 +36,7 @@ d.set_rv_names('SXY')
 The following code computes the unique information of X using the admUI algorithm:
 
 ```python
-Q = admUI.computeQUI(distSXY = d, DEBUG = True)
+Q = admUI.computeQUI(distSXY = d)
 print(Q)
 dit.shannon.conditional_entropy(Q, 'S', 'Y') + dit.shannon.conditional_entropy(Q, 'X', 'Y') - dit.shannon.conditional_entropy(Q, 'SX', 'Y')
 ```
