@@ -5,7 +5,7 @@ from admUI_numpy import computeQUI_numpy
 maxiter = 1000
 maxiter2 = maxiter
 
-def computeQUI(distSXY, eps = 1e-7, DEBUG = False, IPmethod = "IS"):
+def computeQUI(distSXY, eps = 1e-7, DEBUG = False, IPmethod = "GIS"):
     '''
     Compute an optimizer Q
 

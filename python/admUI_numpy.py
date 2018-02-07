@@ -1,10 +1,10 @@
 import numpy
-from numpy import *
+# from numpy import *
 
 maxiter = 1000
 maxiter2 = maxiter
 
-def computeQUI_numpy(PXgSa, PYgSa, PS, eps = 1e-7, DEBUG = False, IPmethod = "IS"):
+def computeQUI_numpy(PXgSa, PYgSa, PS, eps = 1e-7, DEBUG = False, IPmethod = "GIS"):
     # print(PXgSa)
     # print(PYgSa)
     nX = PXgSa.shape[0]
@@ -75,17 +75,17 @@ def Iproj_tech_GIS(PXgsa, PYgsa, RXYa, eps = 1e-9, DEBUG = False):
     rangeXb = range(nXi)
     rangeYb = range(nYi)
 
-    factorD = sqrt(PXgsa[xindices, newaxis] * PYgsa[newaxis, yindices])  # denominator of iteration factor
+    factorD = numpy.sqrt(PXgsa[xindices, numpy.newaxis] * PYgsa[numpy.newaxis, yindices])  # denominator of iteration factor
     for it2 in range(maxiter2):
         # print("b:")
         # print(b)
-        oosbx = sqrt(1. / sum(b, 1))
-        oosby = sqrt(1. / sum(b, 0))
+        oosbx = numpy.sqrt(1. / numpy.sum(b, 1))
+        oosby = numpy.sqrt(1. / numpy.sum(b, 0))
 #                print("b:", b.shape, b)
         # bx = numpy.array(numpy.sum(b, 1)).reshape(-1)
         # by = numpy.array(numpy.sum(b, 0)).reshape(-1)
 
-        factor = factorD * oosbx[:, newaxis] * oosby[newaxis, :]
+        factor = factorD * oosbx[:, numpy.newaxis] * oosby[numpy.newaxis, :]
 
                 # for x in rangeXb:
                 #     for y in rangeYb:
@@ -134,9 +134,9 @@ def Iproj_tech_IS(PXgsa, PYgsa, RXYa, eps = 1e-9, DEBUG = False):
 
 #    factorD = sqrt(PXgsa[xindices, newaxis] * PYgsa[newaxis, yindices])  # denominator of iteration factor
     for it2 in range(maxiter2):
-        factorx = PXgsa[xindices] / sum(b, 1)
+        factorx = PXgsa[xindices] / numpy.sum(b, 1)
         b *= factorx[:, numpy.newaxis]
-        factory = PYgsa[yindices] / sum(b, 0)
+        factory = PYgsa[yindices] / numpy.sum(b, 0)
         b *= factory[numpy.newaxis, :]
 
         diff2 = numpy.amax(factorx) * numpy.amax(factory)
