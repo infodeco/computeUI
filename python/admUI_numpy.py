@@ -4,7 +4,8 @@ import numpy
 maxiter = 1000
 maxiter2 = maxiter
 
-def computeQUI_numpy(PXgSa, PYgSa, PS, eps = 1e-7, DEBUG = False, IPmethod = "GIS"):
+def computeQUI_numpy(PXgSa, PYgSa, PS, eps = 1e-7, DEBUG = False, IPmethod = "GIS",
+                         maxiter = 1000, maxiter2 = 1000):
     # print(PXgSa)
     # print(PYgSa)
     nX = PXgSa.shape[0]
@@ -27,9 +28,11 @@ def computeQUI_numpy(PXgSa, PYgSa, PS, eps = 1e-7, DEBUG = False, IPmethod = "GI
             # print(s, ":")
             # b is zero if PXgSa[x, s] == 0 or PXgSa[y, s] == 0
             if (IPmethod == "IS"):
-                Ip, xindices, yindices = Iproj_tech_IS(PXgSa[:, s], PYgSa[:, s], RXYa, eps = eps2, DEBUG = DEBUG)
+                Ip, xindices, yindices = Iproj_tech_IS(PXgSa[:, s], PYgSa[:, s], RXYa, eps = eps2, DEBUG = DEBUG,
+                                                           maxiter2 = maxiter2)
             else:
-                Ip, xindices, yindices = Iproj_tech_GIS(PXgSa[:, s], PYgSa[:, s], RXYa, eps = eps2, DEBUG = DEBUG)
+                Ip, xindices, yindices = Iproj_tech_GIS(PXgSa[:, s], PYgSa[:, s], RXYa, eps = eps2, DEBUG = DEBUG,
+                                                           maxiter2 = maxiter2)
             Ip = Ip.reshape(-1)
             if (numpy.amin(QXYgSa[numpy.outer(xindices, yindices), s]) <= 0.):
                 diffs = 2.
@@ -57,7 +60,7 @@ def computeQUI_numpy(PXgSa, PYgSa, PS, eps = 1e-7, DEBUG = False, IPmethod = "GI
     return QSXYa
     
 
-def Iproj_tech_GIS(PXgsa, PYgsa, RXYa, eps = 1e-9, DEBUG = False):
+def Iproj_tech_GIS(PXgsa, PYgsa, RXYa, eps = 1e-9, DEBUG = False, maxiter2 = 1000):
     '''
     Generalized iterative scaling.
     '''
@@ -114,7 +117,7 @@ def Iproj_tech_GIS(PXgsa, PYgsa, RXYa, eps = 1e-9, DEBUG = False):
     #     print("it2: ", it2)
     return b, xindices, yindices
 
-def Iproj_tech_IS(PXgsa, PYgsa, RXYa, eps = 1e-9, DEBUG = False):
+def Iproj_tech_IS(PXgsa, PYgsa, RXYa, eps = 1e-9, DEBUG = False, maxiter2 = 1000):
     '''
     Iterative scaling.
     '''
