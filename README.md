@@ -19,8 +19,8 @@ by amending `sys.path`):
 - `admUI.py`: This file contains the wrapper function `computeQUI` that allows to work with probability distributions generated using [`dit`](https://github.com/dit/).
 
 The following files contain tests and examples:
-- `test_admUI.py`: testcase comparing the admUI algorithm with the Frank-Wolfe implementation in the [dit](https://github.com/dit/) package for some easy examples.
-- `test_admUI_cvxUI_dataPs.py`, `test_dit_dataPs.py`: testcases for generating datapoints to compare the admUI with an implementation [cvxopt_solve](https://github.com/Abzinger/BROJA-Bivariate-Partial_Information_Decomposition/blob/master/Python/cvxopt_solve.py) using the python interior-point solver [CVXOPT](http://cvxopt.org/) and the Frank-Wolfe implementation in the [dit](https://github.com/dit/) package.
+- `test_admUI.py`: testcase comparing the admUI algorithm with the Frank-Wolfe implementation in the [`dit`](https://github.com/dit/) package for some small examples.  On small examples, both algorithms perform well, and the `dit` implementation often beats `admUI`.  The comparison demonstrates that `admUI` achieves the specified error rate (unless one of the loops reaches the maximum number of iterations).
+- `test_admUI_cvxUI_dataPs.py`, `test_dit_dataPs.py`: testcases for generating datapoints to compare the admUI with an implementation [cvxopt_solve](https://github.com/Abzinger/BROJA-Bivariate-Partial_Information_Decomposition/blob/master/Python/cvxopt_solve.py) using the python interior-point solver [CVXOPT](http://cvxopt.org/) and the Frank-Wolfe implementation in the [`dit`](https://github.com/dit/) package.
 
 ### Example: The AND distribution S = AND(X,Y) using `dit`
 

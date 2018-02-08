@@ -26,6 +26,11 @@ examples = [
     dit.Distribution(['000', '010', '020', '102', '110', '122'],
         [0.0869196091623, 0.0218631235533, 0.133963681059, 0.164924698739, 0.429533105427, 0.16279578206])]
 
+## count some statistics
+max_delta = 0.
+total_time_admUI = 0.
+total_time_dit = 0.
+
 for d in examples:
     d.set_rv_names('SXY')
     print(d.to_dict())
@@ -33,21 +38,29 @@ for d in examples:
     start_time = time.time()
     Q = computeQUI(distSXY = d, DEBUG = True)
     admUI_time = time.time() - start_time
+    total_time_admUI += admUI_time
     UIX = dit.shannon.conditional_entropy(Q, 'S', 'Y') + dit.shannon.conditional_entropy(Q, 'X', 'Y') - dit.shannon.conditional_entropy(Q, 'SX', 'Y')
-    UIX2 = dit.shannon.entropy(Q, 'SY') + dit.shannon.entropy(Q, 'XY') - dit.shannon.entropy(Q, 'SXY') - dit.shannon.entropy(Q, 'Y')
+    # UIX2 = dit.shannon.entropy(Q, 'SY') + dit.shannon.entropy(Q, 'XY') - dit.shannon.entropy(Q, 'SXY') - dit.shannon.entropy(Q, 'Y')
 # print(abs(UIX - UIX2) < 1e-10)
     UIY = dit.shannon.conditional_entropy(Q, 'S', 'X') + dit.shannon.conditional_entropy(Q, 'Y', 'X') - dit.shannon.conditional_entropy(Q, 'SY', 'X')
     SI = dit.shannon.mutual_information(Q, 'S', 'X') - UIX
-    SI2 = dit.shannon.entropy(Q, 'S') + dit.shannon.entropy(Q, 'X') - dit.shannon.entropy(Q, 'SX') - UIX
-    SI3 = dit.shannon.entropy(Q, 'S') + dit.shannon.entropy(Q, 'X') + dit.shannon.entropy(Q, 'Y') - dit.shannon.entropy(Q, 'SX') - dit.shannon.entropy(Q, 'SY') - dit.shannon.entropy(Q, 'XY') + dit.shannon.entropy(Q, 'SXY')
+    # SI2 = dit.shannon.entropy(Q, 'S') + dit.shannon.entropy(Q, 'X') - dit.shannon.entropy(Q, 'SX') - UIX
+    # SI3 = dit.shannon.entropy(Q, 'S') + dit.shannon.entropy(Q, 'X') + dit.shannon.entropy(Q, 'Y') - dit.shannon.entropy(Q, 'SX') - dit.shannon.entropy(Q, 'SY') - dit.shannon.entropy(Q, 'XY') + dit.shannon.entropy(Q, 'SXY')
     CI = dit.shannon.mutual_information(d, 'S', 'XY') - UIX - UIY - SI
-    CIQ = dit.shannon.mutual_information(Q, 'S', 'XY') - UIX - UIY - SI
+    # CIQ = dit.shannon.mutual_information(Q, 'S', 'XY') - UIX - UIY - SI ## <-- should be close to zero
     print(Q.to_dict())
 ## pid from dit
     start_time = time.time()
     pid = dit.algorithms.pid_broja(d, ['X', 'Y'], 'S')
     dit_time = time.time() - start_time
+    total_time_dit += dit_time
     print("admUI: PID(R=", SI, ", U0=", UIX, ", U1=", UIY, ", S=", CI, ")", sep = '')
     print("dit:  ", pid)
     print("--- admUI:", round(admUI_time, 3), "seconds --- dit:", round(dit_time, 3), "seconds ---")
+    delta = [abs(pid.R - SI), abs(pid.U0 - UIX), abs(pid.U1 - UIY), abs(pid.S - CI)]
+    max_delta = max(max_delta, max(delta))
     print()
+
+print("Maximal deviation between admUI and dit:", max_delta)
+print("Average running time admUI:", total_time_admUI / len(examples), "seconds")
+print("Average running time dit  :", total_time_dit / len(examples), "seconds")
