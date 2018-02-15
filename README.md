@@ -5,7 +5,7 @@ The code implements the admUI algorithm proposed by Banerjee, et al. in [*Comput
 
 The repository contains two implementation:
 - an implementation in Python that works together with the Python package [dit](https://github.com/dit/).
-- an implementation in Matlab. 
+- an implementation in Matlab/Octave.
 
 ## Python
 
@@ -63,11 +63,11 @@ Q = admUI_numpy.computeQUI_numpy(PXgS, PYgS, PS)
 
 The output is a threedimensional `numpy` array of the joint distribution.
 
-## Matlab
+## Matlab/Octave
 
-The Matlab version was tested with Matlab 2017a, but should also work with older versions of Matlab.  However, Matlab 2017a is needed to make use of the MEX-feature (see below).
+The Matlab version was tested with Matlab 2017a and Octave 4.0, but should also work with older versions of Matlab or Octave.  However, Matlab 2017a is needed to make use of the MEX-feature (see below).
 
-### An easy example: The AND distribution
+### Example: The AND distribution
 
 ```matlab
 ns = 2; ny = 2; nz = 2; 
