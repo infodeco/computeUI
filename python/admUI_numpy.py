@@ -4,6 +4,7 @@ from numpy import *
 maxiter = 1000
 maxiter2 = maxiter
 
+
 def computeQUI_numpy(PXgSa, PYgSa, PS, eps = 1e-7, DEBUG = False, IPmethod = "IS"):
     # print(PXgSa)
     # print(PYgSa)
@@ -113,6 +114,7 @@ def Iproj_tech_GIS(PXgsa, PYgsa, RXYa, eps = 1e-9, DEBUG = False):
     # if DEBUG:
     #     print("it2: ", it2)
     return b, xindices, yindices
+
 
 def Iproj_tech_IS(PXgsa, PYgsa, RXYa, eps = 1e-9, DEBUG = False):
     '''

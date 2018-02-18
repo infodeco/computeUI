@@ -5,6 +5,7 @@ from admUI_numpy import computeQUI_numpy
 maxiter = 1000
 maxiter2 = maxiter
 
+
 def computeQUI(distSXY, eps = 1e-7, DEBUG = False, IPmethod = "IS"):
     '''
     Compute an optimizer Q
@@ -13,7 +14,7 @@ def computeQUI(distSXY, eps = 1e-7, DEBUG = False, IPmethod = "IS"):
     eps     : The precision of the outer loop.  The precision of the inner loop will be eps / (20 |S|).
     DEBUG   : Print output for debugging.
     '''
-    #############  Prepare distributions
+    # Prepare distributions
     QSXYd = distSXY.copy()    # make a copy, to not overwrite the argument
     QSXYd.set_rv_names('SXY')
     QSXYd.make_dense()        # the set of outcomes should be Cartesian
