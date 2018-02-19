@@ -9,6 +9,10 @@ import matplotlib.pyplot as plt
 import numpy as np
 import scipy.io
 
+
+if sys.version_info < (3,):
+    range = xrange
+
 # mirror sys.stdout to a log file
 class Logger(object):
     def __init__(self):
@@ -37,10 +41,10 @@ dit_errorcnt = 0
 UIcv = np.empty(shape=(ndist,nsmax))
 ltimecv = np.empty(shape=(ndist,nsmax))
 
-for ns in xrange(1,nsmax):
+for ns in range(1,nsmax):
     ny=ns; nz=ns;
     print("--------------- ns= %s ---------------" %(ns+1))
-    for i in xrange(0,ndist):
+    for i in range(0,ndist):
         Pt = npy[:,i,ns]
         P = Pt[Pt!=0]
         Ps = P.reshape(nz+1,ny+1,ns+1)
