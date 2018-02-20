@@ -1,11 +1,11 @@
 import numpy
-from numpy import *
+# from numpy import *
 
 maxiter = 1000
 maxiter2 = maxiter
 
-
-def computeQUI_numpy(PXgSa, PYgSa, PS, eps = 1e-7, DEBUG = False, IPmethod = "IS"):
+def computeQUI_numpy(PXgSa, PYgSa, PS, eps = 1e-7, DEBUG = False, IPmethod = "GIS",
+                         maxiter = 1000, maxiter2 = 1000):
     # print(PXgSa)
     # print(PYgSa)
     nX = PXgSa.shape[0]
@@ -29,9 +29,11 @@ def computeQUI_numpy(PXgSa, PYgSa, PS, eps = 1e-7, DEBUG = False, IPmethod = "IS
             # print(s, ":")
             # b is zero if PXgSa[x, s] == 0 or PXgSa[y, s] == 0
             if (IPmethod == "IS"):
-                Ip, xindices, yindices = Iproj_tech_IS(PXgSa[:, s], PYgSa[:, s], RXYa, eps = eps2, DEBUG = DEBUG)
+                Ip, xindices, yindices = Iproj_tech_IS(PXgSa[:, s], PYgSa[:, s], RXYa, eps = eps2, DEBUG = DEBUG,
+                                                           maxiter2 = maxiter2)
             else:
-                Ip, xindices, yindices = Iproj_tech_GIS(PXgSa[:, s], PYgSa[:, s], RXYa, eps = eps2, DEBUG = DEBUG)
+                Ip, xindices, yindices = Iproj_tech_GIS(PXgSa[:, s], PYgSa[:, s], RXYa, eps = eps2, DEBUG = DEBUG,
+                                                           maxiter2 = maxiter2)
             Ip = Ip.reshape(-1)
             if (numpy.amin(QXYgSa[numpy.outer(xindices, yindices), s]) <= 0.):
                 diffs = 2.
@@ -61,7 +63,7 @@ def computeQUI_numpy(PXgSa, PYgSa, PS, eps = 1e-7, DEBUG = False, IPmethod = "IS
     return QSXYa
     
 
-def Iproj_tech_GIS(PXgsa, PYgsa, RXYa, eps = 1e-9, DEBUG = False):
+def Iproj_tech_GIS(PXgsa, PYgsa, RXYa, eps = 1e-9, DEBUG = False, maxiter2 = 1000):
     '''
     Generalized iterative scaling.
     '''
@@ -79,17 +81,17 @@ def Iproj_tech_GIS(PXgsa, PYgsa, RXYa, eps = 1e-9, DEBUG = False):
     rangeXb = range(nXi)
     rangeYb = range(nYi)
 
-    factorD = sqrt(PXgsa[xindices, newaxis] * PYgsa[newaxis, yindices])  # denominator of iteration factor
+    factorD = numpy.sqrt(PXgsa[xindices, numpy.newaxis] * PYgsa[numpy.newaxis, yindices])  # denominator of iteration factor
     for it2 in range(maxiter2):
         # print("b:")
         # print(b)
-        oosbx = sqrt(1. / sum(b, 1))
-        oosby = sqrt(1. / sum(b, 0))
+        oosbx = numpy.sqrt(1. / numpy.sum(b, 1))
+        oosby = numpy.sqrt(1. / numpy.sum(b, 0))
 #                print("b:", b.shape, b)
         # bx = numpy.array(numpy.sum(b, 1)).reshape(-1)
         # by = numpy.array(numpy.sum(b, 0)).reshape(-1)
 
-        factor = factorD * oosbx[:, newaxis] * oosby[newaxis, :]
+        factor = factorD * oosbx[:, numpy.newaxis] * oosby[numpy.newaxis, :]
 
                 # for x in rangeXb:
                 #     for y in rangeYb:
@@ -118,8 +120,7 @@ def Iproj_tech_GIS(PXgsa, PYgsa, RXYa, eps = 1e-9, DEBUG = False):
     #     print("it2: ", it2)
     return b, xindices, yindices
 
-
-def Iproj_tech_IS(PXgsa, PYgsa, RXYa, eps = 1e-9, DEBUG = False):
+def Iproj_tech_IS(PXgsa, PYgsa, RXYa, eps = 1e-9, DEBUG = False, maxiter2 = 1000):
     '''
     Iterative scaling.
     '''
@@ -139,9 +140,9 @@ def Iproj_tech_IS(PXgsa, PYgsa, RXYa, eps = 1e-9, DEBUG = False):
 
 #    factorD = sqrt(PXgsa[xindices, newaxis] * PYgsa[newaxis, yindices])  # denominator of iteration factor
     for it2 in range(maxiter2):
-        factorx = PXgsa[xindices] / sum(b, 1)
+        factorx = PXgsa[xindices] / numpy.sum(b, 1)
         b *= factorx[:, numpy.newaxis]
-        factory = PYgsa[yindices] / sum(b, 0)
+        factory = PYgsa[yindices] / numpy.sum(b, 0)
         b *= factory[numpy.newaxis, :]
 
         diff2 = numpy.amax(factorx) * numpy.amax(factory)

@@ -2,8 +2,8 @@ import dit
 import numpy
 from admUI_numpy import computeQUI_numpy 
 
-
-def computeQUI(distSXY, eps = 1e-7, DEBUG = False, IPmethod = "IS"):
+def computeQUI(distSXY, eps = 1e-7, DEBUG = False, IPmethod = "GIS",
+                   maxiter = 1000, maxiter2 = 1000):
     '''
     Compute an optimizer Q
 
@@ -36,7 +36,8 @@ def computeQUI(distSXY, eps = 1e-7, DEBUG = False, IPmethod = "IS"):
     PYgSa = numpy.array(list(map(lambda x: x.pmf, QSXYd.condition_on('S', rvs = 'Y')[1]))).transpose()
 
     # print(1e-6 * numpy.ones((nX, nY)) / (nX * nY) + (1 - 1e-6) * QSXYd.marginal('X').pmf.reshape(nX, 1) * QSXYd.marginal('Y').pmf.reshape(1, nY))
-    QSXYa = computeQUI_numpy(PXgSa, PYgSa, PS, eps = eps, DEBUG = DEBUG, IPmethod = IPmethod).reshape(-1)
+    QSXYa = computeQUI_numpy(PXgSa, PYgSa, PS, eps = eps, DEBUG = DEBUG, IPmethod = IPmethod,
+                                 maxiter = maxiter, maxiter2 = maxiter2).reshape(-1)
 
     QSXYd = dit.Distribution(samplespace, QSXYa)
     QSXYd.set_rv_names('SXY')
