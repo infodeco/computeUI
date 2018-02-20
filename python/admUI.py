@@ -10,8 +10,10 @@ def computeQUI(distSXY, eps = 1e-7, DEBUG = False, IPmethod = "GIS",
     distSXY : A joint distribution of three variables (as a dit.Distribution).
     eps     : The precision of the outer loop.  The precision of the inner loop will be eps / (20 |S|).
     DEBUG   : Print output for debugging.
+
+    The computation is carried out using computeQUI_numpy
     '''
-    #############  Prepare distributions
+    # Prepare distributions
     QSXYd = distSXY.copy()    # make a copy, to not overwrite the argument
     QSXYd.set_rv_names('SXY')
     QSXYd.make_dense()        # the set of outcomes should be Cartesian

@@ -54,12 +54,31 @@ for d in examples:
     pid = dit.algorithms.pid_broja(d, ['X', 'Y'], 'S')
     dit_time = time.time() - start_time
     total_time_dit += dit_time
+    
     print("admUI: PID(R=", SI, ", U0=", UIX, ", U1=", UIY, ", S=", CI, ")", sep = '')
     print("dit:  ", pid)
     print("--- admUI:", round(admUI_time, 3), "seconds --- dit:", round(dit_time, 3), "seconds ---")
     delta = [abs(pid.R - SI), abs(pid.U0 - UIX), abs(pid.U1 - UIY), abs(pid.S - CI)]
     max_delta = max(max_delta, max(delta))
     print()
+
+'''
+# Example d12 without using dit
+print("\nRunning admUI without dit on example d12...")
+ns=2
+nx=3
+ny=2
+P = np.array([0.0869196091623, 0, 0.0218631235533, 0, 0.133963681059, 0, 0, 0.164924698739, 0.429533105427, 0, 0, 0.16279578206])
+Psxy = np.reshape(P,[ns,nx,ny])
+Psx = np.sum(Psxy,axis=2)    
+Psy = np.sum(Psxy,axis=1)
+PS = np.sum(Psx,axis=1)
+PXgS = np.divide(np.transpose(Psx), PS)
+PYgS = np.divide(np.transpose(Psy), PS)
+PS = PS.reshape((-1, 1))
+Q = computeQUI_numpy(PXgS, PYgS, PS)
+print("p=\n", Q)
+'''
 
 print("Maximal deviation between admUI and dit:", max_delta)
 print("Average running time admUI:", total_time_admUI / len(examples), "seconds")

@@ -1,4 +1,4 @@
-# Generates the datapoints for dit in Figure 3 of the paper
+# Generates the data points for dit in Figure 3 of the paper
 import sys
 sys.path.insert(0, '../')
 from admUI import computeQUI
@@ -14,6 +14,10 @@ import scipy.io
 #     def __init__(self):
 #         self.terminal = sys.stdout
 #         self.log = open("logPs_dit.dat", "w")
+
+if sys.version_info < (3,):
+    range = xrange
+
 
 #     def write(self, message):
 #         self.terminal.write(message)
@@ -37,15 +41,16 @@ dit_errorcnt = 0
 UIcv = np.empty(shape = (ndist, nsmax))
 ltimecv = np.empty(shape = (ndist, nsmax))
 
-for ns in xrange(1, nsmax):
+for ns in range(1, nsmax):
     ny = ns; nz = ns;
     print("--------------- ns = %s ---------------" %(ns + 1))
-    for i in xrange(0, ndist):
+    for i in range(0, ndist):
         Pt = npy[:, i, ns]
         P = Pt[Pt != 0]
         Ps = P.reshape(nz + 1, ny + 1, ns + 1)
         d = Distribution.from_ndarray(Ps)
         d.set_rv_names('SXY')
+        
         ## admUI
         start_time = time.time()
         Q = computeQUI(d)
