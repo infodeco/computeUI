@@ -1,29 +1,54 @@
 # Generates the datapoints for admUI and cvxopt in Figure 3 of the paper
-import sys
 from admUI import computeQUI
-import tests.cvxopt_solve as cvxopt_solve
+import cvxopt_solve
 import dit
 import time
 import numpy as np
 import scipy.io
 import cvxopt.solvers
+import argparse
+
+parser = argparse.ArgumentParser(description='Test admUI vs. cvxopt.')
+parser.add_argument('logfilename', nargs="?", default="",
+                    help=("A logfile name.  "
+                          "If omitted, results are output to stdout."))
+logfilename = parser.parse_args().logfilename
+logging = logfilename != ''
+if logging:
+    logfile = open(logfilename, "w")
+    logfile.write("# ns, admUI_result, admUI_time, "
+                  "cvxopt_result, cvxopt_time\n")
+else:
+    print("Logging results to file '{}'".format(logfilename))
 
 # Silence the cvsopt solver:
 cvxopt.solvers.options['show_progress'] = False
 
 
-# mirror sys.stdout to a log file
-class Logger(object):
-    def __init__(self):
-        self.terminal = sys.stdout
-        self.log = open("logPs_admUI_cvxopt.dat", "w")
+def cvxopt_solve_PDF(pdf):
+    '''Call the solver from cvxopt_solve and compute UI from its output.'''
+    p_xy = cvxopt_solve.marginal_xy(pdf)
+    p_xz = cvxopt_solve.marginal_xz(pdf)
+    p_z = dict()
+    for xz, prob in p_xz.items():
+        x, z = xz
+        if z in p_z.keys():
+            p_z[z] += prob
+        else:
+            p_z[z] = prob
+    cvx = cvxopt_solve.Cvxopt_Solve(p_xy, p_xz)
+    cvx.solve_it()
+    Qs = dict()
+    for xyz, i in cvx.var_idx.items():
+            Qs[xyz] = cvx.solver_ret['x'][i]
+    p_yz = cvxopt_solve.marginal_yz(Qs)
+    I_XY_Z = 0
+    for xyz, t in Qs.items():
+        x, y, z = xyz
+        if t > 0:
+            I_XY_Z += t * cvxopt.log((t * p_z[z])/(p_xz[(x, z)]*p_yz[(y, z)]))
+    return I_XY_Z / cvxopt.log(2)
 
-    def write(self, message):
-        self.terminal.write(message)
-        self.log.write(message)
-
-
-sys.stdout = Logger()
 
 # read data file
 mat = scipy.io.loadmat('../data/dataPs.mat')
@@ -59,16 +84,24 @@ for ns in range(1, nsmax):
         lapsed_time = time.time() - start_time
         UIv[i, ns] = UIX
         ltimev[i, ns] = lapsed_time
-        print("admUI = %.15f" % UIX, "      time = %.15f" % lapsed_time)
+        if logging:
+            logfile.write("{}, ".format(ns + 1))
+            logfile.write("{:.15f}, {:.15f}, ".format(UIX, lapsed_time))
+        else:
+            print("admUI = %.15f" % UIX, "      time = %.15f" % lapsed_time)
 
         # cvxopt
         pdf = dict(zip(d.outcomes, d.pmf))
         start_timec = time.time()
-        UIXc = cvxopt_solve.solve_PDF(pdf)
+        UIXc = cvxopt_solve_PDF(pdf)
         lapsed_timec = time.time() - start_timec
         UIcv[i, ns] = UIXc
         ltimecv[i, ns] = lapsed_timec
-        print("cvxUI = %.15f" % UIXc, "      time = %.15f" % lapsed_timec)
+        if logging:
+            logfile.write("{:.15f}, {:.15f}\n".format(UIXc, lapsed_timec))
+        else:
+            print("cvxUI = %.15f" % UIXc, "      time = %.15f" % lapsed_timec)
+    print('')
 
 np.set_printoptions(precision=15)
 print("-------------------- admUI --------------------")
@@ -91,3 +124,5 @@ print("cvxUI:")
 print(mUIcv)
 print("time:")
 print(mltimecv)
+
+logfile.close()

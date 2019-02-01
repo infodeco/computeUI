@@ -20,7 +20,11 @@ by amending `sys.path`):
 
 The following files contain tests and examples:
 - `test_admUI.py`: testcase comparing the admUI algorithm with the Frank-Wolfe implementation in the [`dit`](https://github.com/dit/) package for some small examples.  On small examples, both algorithms perform well, and the `dit` implementation often beats `admUI`.  The comparison demonstrates that `admUI` achieves the specified error rate (unless one of the loops reaches the maximum number of iterations).
-- `test_admUI_cvxUI_dataPs.py`, `test_dit_dataPs.py`: testcases for generating datapoints to compare the admUI with an implementation [cvxopt_solve](https://github.com/Abzinger/BROJA-Bivariate-Partial_Information_Decomposition/blob/master/Python/cvxopt_solve.py) using the python interior-point solver [CVXOPT](http://cvxopt.org/) and the Frank-Wolfe implementation in the [`dit`](https://github.com/dit/) package.
+- `test_admUI_cvxUI_dataPs.py`: testcases for generating datapoints to compare the admUI with an implementation [`cvxopt_solve`](https://github.com/Abzinger/BROJA-Bivariate-Partial_Information_Decomposition/blob/master/Python/cvxopt_solve.py) using the python interior-point solver [`CVXOPT`](http://cvxopt.org/).  To run the test, `CVXOPT` needs to be installed, as well as `cvxopt_solve`.  Make sure that the script finds all its dependencies; e.g. use something like:
+```
+$ PYTHONPATH='.:../../BROJA-Bivariate-Partial_Information_Decomposition/Python' python3 tests/test_admUI_cvxUI_dataPs.py
+```
+- `test_dit_dataPs.py`: testcases for generating datapoints to compare the admUI with an implementation based on the Frank-Wolfe algorithm from the [`dit`](https://github.com/dit/) package.
 
 ### Example: The AND distribution S = AND(X,Y) using `dit`
 
