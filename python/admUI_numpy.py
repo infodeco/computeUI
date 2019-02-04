@@ -4,8 +4,9 @@ import numpy
 maxiter = 1000
 maxiter2 = maxiter
 
-def computeQUI_numpy(PXgSa, PYgSa, PS, eps = 1e-7, DEBUG = False, IPmethod = "GIS",
-                         maxiter = 1000, maxiter2 = 1000):
+
+def computeQUI_numpy(PXgSa, PYgSa, PS, eps=1e-7, IPmethod="GIS",
+                     maxiter=1000, maxiter2=1000, DEBUG=False):
     # print(PXgSa)
     # print(PYgSa)
     nX = PXgSa.shape[0]
@@ -17,37 +18,41 @@ def computeQUI_numpy(PXgSa, PYgSa, PS, eps = 1e-7, DEBUG = False, IPmethod = "GI
 
     eps2 = eps / (20 * nS)
 
-    ### Start with a full support
-    RXYa = 1e-6 * numpy.ones((nX, nY)) / nXY + (1 - 1e-6) * numpy.outer(numpy.dot(PXgSa, PS), numpy.dot(PYgSa, PS))
+    # Start with a full support
+    RXYa = (1e-6 * numpy.ones((nX, nY)) / nXY + (1 - 1e-6)
+            * numpy.outer(numpy.dot(PXgSa, PS), numpy.dot(PYgSa, PS)))
     QXYgSa = numpy.zeros((nX, nY, nS))
 
-    ### Start the loop
+    # -------- Start the loop
     for it in range(maxiter):
         diff = 1.
-        ### Step 1
+        # -------- Step 1
         for s in rangeS:
             # print(s, ":")
             # b is zero if PXgSa[x, s] == 0 or PXgSa[y, s] == 0
             if (IPmethod == "IS"):
-                Ip, xindices, yindices = Iproj_tech_IS(PXgSa[:, s], PYgSa[:, s], RXYa, eps = eps2, DEBUG = DEBUG,
-                                                           maxiter2 = maxiter2)
+                Ip, xindices, yindices = Iproj_tech_IS(
+                    PXgSa[:, s], PYgSa[:, s], RXYa,
+                    eps=eps2, maxiter2=maxiter2, DEBUG=DEBUG)
             else:
-                Ip, xindices, yindices = Iproj_tech_GIS(PXgSa[:, s], PYgSa[:, s], RXYa, eps = eps2, DEBUG = DEBUG,
-                                                           maxiter2 = maxiter2)
+                Ip, xindices, yindices = Iproj_tech_GIS(
+                    PXgSa[:, s], PYgSa[:, s], RXYa,
+                    eps=eps2, maxiter2=maxiter2, DEBUG=DEBUG)
             Ip = Ip.reshape(-1)
             if (numpy.amin(QXYgSa[numpy.outer(xindices, yindices), s]) <= 0.):
                 diffs = 2.
             else:
-                diffs = numpy.amax(Ip / QXYgSa[numpy.outer(xindices, yindices), s])
+                diffs = numpy.amax(Ip /
+                                   QXYgSa[numpy.outer(xindices, yindices), s])
             if (diffs > diff):
                 diff = diffs
 
             QXYgSa[numpy.outer(xindices, yindices), s] = Ip
 
-        ### Step 2
+        # -------- Step 2
         RXYa = numpy.dot(QXYgSa.reshape(nXY, nS), PS).reshape(nX, nY)
 
-        ### Stopping criterion
+        # -------- Stopping criterion
         if (diff - 1. < eps):
             break
         # else:
@@ -61,9 +66,9 @@ def computeQUI_numpy(PXgSa, PYgSa, PS, eps = 1e-7, DEBUG = False, IPmethod = "GI
     QSXYa = (QXYgSa * PS[:, 0]).transpose((2, 0, 1))
     # QSXYa = QSXYa.reshape(-1)
     return QSXYa
-    
 
-def Iproj_tech_GIS(PXgsa, PYgsa, RXYa, eps = 1e-9, DEBUG = False, maxiter2 = 1000):
+
+def Iproj_tech_GIS(PXgsa, PYgsa, RXYa, eps=1e-9, maxiter2=1000, DEBUG=False):
     '''
     Generalized iterative scaling.
     '''
@@ -78,10 +83,10 @@ def Iproj_tech_GIS(PXgsa, PYgsa, RXYa, eps = 1e-9, DEBUG = False, maxiter2 = 100
     nYi = sum(yindices)
     # b = RXYa.copy()
     b = RXYa[numpy.outer(xindices, yindices)].reshape(nXi, nYi)
-    rangeXb = range(nXi)
-    rangeYb = range(nYi)
 
-    factorD = numpy.sqrt(PXgsa[xindices, numpy.newaxis] * PYgsa[numpy.newaxis, yindices])  # denominator of iteration factor
+    # denominator of iteration factor
+    factorD = numpy.sqrt(PXgsa[xindices, numpy.newaxis]
+                         * PYgsa[numpy.newaxis, yindices])
     for it2 in range(maxiter2):
         # print("b:")
         # print(b)
@@ -93,26 +98,27 @@ def Iproj_tech_GIS(PXgsa, PYgsa, RXYa, eps = 1e-9, DEBUG = False, maxiter2 = 100
 
         factor = factorD * oosbx[:, numpy.newaxis] * oosby[numpy.newaxis, :]
 
-                # for x in rangeXb:
-                #     for y in rangeYb:
-                #         # compute and apply the update factor
-                #         if (b[x, y] != 0):
-                #             facxy = PXgSa[x, s] * PYgSa[y, s]
-                #             print(x, y)
-                #             facxy = sqrt(facxy / (bx[x] * by[y]))
-                #             print(factor[x, y])
-                #             print(facxy)
-#                            b[x, y] = b[x, y] * facxy
-                #             # check if the update factor was larger than the previous maximum
-                #             if (facxy > diff2):
-                #                 diff2 = facxy
+        # for x in rangeXb:
+        #     for y in rangeYb:
+        #         # compute and apply the update factor
+        #         if (b[x, y] != 0):
+        #             facxy = PXgSa[x, s] * PYgSa[y, s]
+        #             print(x, y)
+        #             facxy = sqrt(facxy / (bx[x] * by[y]))
+        #             print(factor[x, y])
+        #             print(facxy)
+        #                 b[x, y] = b[x, y] * facxy
+        # # check if the update factor was larger than the previous maximum
+        #             if (facxy > diff2):
+        #                 diff2 = facxy
 
         b *= factor
         diff2 = numpy.amax(factor)
         if (diff2 < 1. + eps):
             break
         if (it2 + 1 == maxiter2):
-            print("Warning: Maximum number of iterations reached in inner loop.")
+            print("Warning: Maximum number of iterations reached in "
+                  "inner loop.")
 
 #            print(b.reshape(-1) / QXYgSa[numpy.outer(xindices, yindices), s])
 
@@ -120,7 +126,8 @@ def Iproj_tech_GIS(PXgsa, PYgsa, RXYa, eps = 1e-9, DEBUG = False, maxiter2 = 100
     #     print("it2: ", it2)
     return b, xindices, yindices
 
-def Iproj_tech_IS(PXgsa, PYgsa, RXYa, eps = 1e-9, DEBUG = False, maxiter2 = 1000):
+
+def Iproj_tech_IS(PXgsa, PYgsa, RXYa, eps=1e-9, maxiter2=1000, DEBUG=False):
     '''
     Iterative scaling.
     '''
@@ -135,10 +142,9 @@ def Iproj_tech_IS(PXgsa, PYgsa, RXYa, eps = 1e-9, DEBUG = False, maxiter2 = 1000
     nYi = sum(yindices)
     # b = RXYa.copy()
     b = RXYa[numpy.outer(xindices, yindices)].reshape(nXi, nYi)
-    rangeXb = range(nXi)
-    rangeYb = range(nYi)
 
-#    factorD = sqrt(PXgsa[xindices, newaxis] * PYgsa[newaxis, yindices])  # denominator of iteration factor
+# # denominator of iteration factor
+#    factorD = sqrt(PXgsa[xindices, newaxis] * PYgsa[newaxis, yindices])
     for it2 in range(maxiter2):
         factorx = PXgsa[xindices] / numpy.sum(b, 1)
         b *= factorx[:, numpy.newaxis]
@@ -149,7 +155,8 @@ def Iproj_tech_IS(PXgsa, PYgsa, RXYa, eps = 1e-9, DEBUG = False, maxiter2 = 1000
         if (diff2 < 1. + eps):
             break
         if (it2 + 1 == maxiter2):
-            print("Warning: Maximum number of iterations reached in inner loop.")
+            print("Warning: Maximum number of iterations reached in "
+                  "inner loop.")
 
 #            print(b.reshape(-1) / QXYgSa[numpy.outer(xindices, yindices), s])
 
