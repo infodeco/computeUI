@@ -9,17 +9,28 @@ import cvxopt.solvers
 import argparse
 
 parser = argparse.ArgumentParser(description='Test admUI vs. cvxopt.')
-parser.add_argument('logfilename', nargs="?", default="",
-                    help=("A logfile name.  "
+parser.add_argument('cvsfilename', nargs="?", default="",
+                    help=("A cvsfile name.  "
                           "If omitted, results are output to stdout."))
-logfilename = parser.parse_args().logfilename
-logging = logfilename != ''
+parser.add_argument('-nsmax', nargs=1, default=10,
+                    help=("The largest cardinality for S "
+                          "for which to run the tests."))
+parser.add_argument('-ndist', nargs=1, default="100",
+                    help=("How many distributions to test "
+                          "for each value of ns."))
+args = parser.parse_args()
+cvsfilename = args.cvsfilename
+# test configuration
+nsmax = args.nsmax
+ndist = args.ndist
+
+logging = cvsfilename != ''
 if logging:
-    logfile = open(logfilename, "w")
-    logfile.write("# ns, admUI_result, admUI_time, "
+    cvsfile = open(cvsfilename, "w")
+    cvsfile.write("# ns, admUI_result, admUI_time, "
                   "cvxopt_result, cvxopt_time\n")
 else:
-    print("Logging results to file '{}'".format(logfilename))
+    print("Logging results to file '{}'".format(cvsfilename))
 
 # Silence the cvsopt solver:
 cvxopt.solvers.options['show_progress'] = False
@@ -54,10 +65,6 @@ def cvxopt_solve_PDF(pdf):
 mat = scipy.io.loadmat('../data/dataPs.mat')
 npy = np.array(mat['Ps'])
 
-# test configuration
-nsmax = 10
-ndist = 100
-
 UIv = np.empty(shape=(ndist, nsmax))
 ltimev = np.empty(shape=(ndist, nsmax))
 UIcv = np.empty(shape=(ndist, nsmax))
@@ -85,8 +92,8 @@ for ns in range(1, nsmax):
         UIv[i, ns] = UIX
         ltimev[i, ns] = lapsed_time
         if logging:
-            logfile.write("{}, ".format(ns + 1))
-            logfile.write("{:.15f}, {:.15f}, ".format(UIX, lapsed_time))
+            cvsfile.write("{}, ".format(ns + 1))
+            cvsfile.write("{:.15f}, {:.15f}, ".format(UIX, lapsed_time))
         else:
             print("admUI = %.15f" % UIX, "      time = %.15f" % lapsed_time)
 
@@ -98,7 +105,7 @@ for ns in range(1, nsmax):
         UIcv[i, ns] = UIXc
         ltimecv[i, ns] = lapsed_timec
         if logging:
-            logfile.write("{:.15f}, {:.15f}\n".format(UIXc, lapsed_timec))
+            cvsfile.write("{:.15f}, {:.15f}\n".format(UIXc, lapsed_timec))
         else:
             print("cvxUI = %.15f" % UIXc, "      time = %.15f" % lapsed_timec)
     print('')
@@ -125,4 +132,4 @@ print(mUIcv)
 print("time:")
 print(mltimecv)
 
-logfile.close()
+cvsfile.close()
