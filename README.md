@@ -35,6 +35,7 @@ import admUI
 import dit
 d = dit.Distribution(['000', '001', '010', '111'], [1. / 4] * 4) 
 d.set_rv_names('SXY')
+print(d)
 ```
 
 The following code computes the unique information of X using the admUI algorithm:
@@ -48,7 +49,8 @@ dit.shannon.conditional_entropy(Q, 'S', 'Y') + dit.shannon.conditional_entropy(Q
 Alternatively, the `dit` package can be used to compute the same quantity:
 
 ```python
-dit.algorithms.pid_broja(d, ['X', 'Y'], 'S') 
+dit_pid = dit.pid.PID_BROJA(d, ['X', 'Y'], 'S')
+print(dit_pid)
 ```
 
 ### Example: The AND distribution with `numpy`
