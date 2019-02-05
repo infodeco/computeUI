@@ -1,5 +1,4 @@
 import numpy
-# from numpy import *
 
 maxiter = 1000
 maxiter2 = maxiter
@@ -7,13 +6,10 @@ maxiter2 = maxiter
 
 def computeQUI_numpy(PXgSa, PYgSa, PS, eps=1e-7, IPmethod="GIS",
                      maxiter=1000, maxiter2=1000, DEBUG=False):
-    # print(PXgSa)
-    # print(PYgSa)
     nX = PXgSa.shape[0]
     nY = PYgSa.shape[0]
     nS = PXgSa.shape[1]
     nXY = nX * nY
-#    nSXY = nS * nX * nY
     rangeS = range(nS)
 
     eps2 = eps / (20 * nS)
@@ -28,7 +24,6 @@ def computeQUI_numpy(PXgSa, PYgSa, PS, eps=1e-7, IPmethod="GIS",
         diff = 1.
         # -------- Step 1
         for s in rangeS:
-            # print(s, ":")
             # b is zero if PXgSa[x, s] == 0 or PXgSa[y, s] == 0
             if (IPmethod == "IS"):
                 Ip, xindices, yindices = Iproj_tech_IS(
@@ -55,11 +50,10 @@ def computeQUI_numpy(PXgSa, PYgSa, PS, eps=1e-7, IPmethod="GIS",
         # -------- Stopping criterion
         if (diff - 1. < eps):
             break
-        # else:
-        #     print(diff)
+        if DEBUG:
+            print("it: ", it)
+            print((QXYgSa * PS[:, 0]).transpose((2, 0, 1)))
 
-    # if DEBUG:
-    #     print("it: ", it)
     if (it + 1 == maxiter):
         print("Warning: Maximum number of iterations reached in outer loop.")
 
@@ -81,36 +75,16 @@ def Iproj_tech_GIS(PXgsa, PYgsa, RXYa, eps=1e-9, maxiter2=1000, DEBUG=False):
     yindices = [PYgsa[y] > 0 for y in rangeY]
     nXi = sum(xindices)
     nYi = sum(yindices)
-    # b = RXYa.copy()
     b = RXYa[numpy.outer(xindices, yindices)].reshape(nXi, nYi)
 
     # denominator of iteration factor
     factorD = numpy.sqrt(PXgsa[xindices, numpy.newaxis]
                          * PYgsa[numpy.newaxis, yindices])
     for it2 in range(maxiter2):
-        # print("b:")
-        # print(b)
         oosbx = numpy.sqrt(1. / numpy.sum(b, 1))
         oosby = numpy.sqrt(1. / numpy.sum(b, 0))
-#                print("b:", b.shape, b)
-        # bx = numpy.array(numpy.sum(b, 1)).reshape(-1)
-        # by = numpy.array(numpy.sum(b, 0)).reshape(-1)
 
         factor = factorD * oosbx[:, numpy.newaxis] * oosby[numpy.newaxis, :]
-
-        # for x in rangeXb:
-        #     for y in rangeYb:
-        #         # compute and apply the update factor
-        #         if (b[x, y] != 0):
-        #             facxy = PXgSa[x, s] * PYgSa[y, s]
-        #             print(x, y)
-        #             facxy = sqrt(facxy / (bx[x] * by[y]))
-        #             print(factor[x, y])
-        #             print(facxy)
-        #                 b[x, y] = b[x, y] * facxy
-        # # check if the update factor was larger than the previous maximum
-        #             if (facxy > diff2):
-        #                 diff2 = facxy
 
         b *= factor
         diff2 = numpy.amax(factor)
@@ -121,9 +95,6 @@ def Iproj_tech_GIS(PXgsa, PYgsa, RXYa, eps=1e-9, maxiter2=1000, DEBUG=False):
                   "inner loop.")
 
 #            print(b.reshape(-1) / QXYgSa[numpy.outer(xindices, yindices), s])
-
-    # if DEBUG:
-    #     print("it2: ", it2)
     return b, xindices, yindices
 
 
@@ -159,7 +130,4 @@ def Iproj_tech_IS(PXgsa, PYgsa, RXYa, eps=1e-9, maxiter2=1000, DEBUG=False):
                   "inner loop.")
 
 #            print(b.reshape(-1) / QXYgSa[numpy.outer(xindices, yindices), s])
-
-    # if DEBUG:
-    #     print("it2: ", it2)
     return b, xindices, yindices
