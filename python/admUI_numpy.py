@@ -12,6 +12,8 @@ def computeQUI_numpy(PXgSa, PYgSa, PS, eps=1e-7, IPmethod="GIS",
     nXY = nX * nY
     rangeS = range(nS)
 
+    PS.reshape(-1)  # make sure that PS is a vector
+
     eps2 = eps / (20 * nS)
 
     # Start with a full support
@@ -52,12 +54,12 @@ def computeQUI_numpy(PXgSa, PYgSa, PS, eps=1e-7, IPmethod="GIS",
             break
         if DEBUG:
             print("it: ", it)
-            print((QXYgSa * PS[:, 0]).transpose((2, 0, 1)))
+            print((QXYgSa * PS).transpose((2, 0, 1)))
 
     if (it + 1 == maxiter):
         print("Warning: Maximum number of iterations reached in outer loop.")
 
-    QSXYa = (QXYgSa * PS[:, 0]).transpose((2, 0, 1))
+    QSXYa = (QXYgSa * PS).transpose((2, 0, 1))
     # QSXYa = QSXYa.reshape(-1)
     return QSXYa
 
