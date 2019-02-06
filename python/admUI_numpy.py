@@ -6,6 +6,20 @@ maxiter2 = maxiter
 
 def computeQUI_numpy(PXgSa, PYgSa, PS, eps=1e-7, IPmethod="GIS",
                      maxiter=1000, maxiter2=1000, DEBUG=False):
+    '''
+    Compute an optimizer Q
+
+    PXgSa    : The conditional distribution of X given S (as a numpy.array).
+    PYgSa    : The conditional distribution of Y given S (as a numpy.array).
+    PS       : The marginal distribution of S (as a numpy.array)
+    eps      : The precision of the outer loop.
+               The precision of the inner loop will be eps / (20 |S|).
+    IPmethod : Which algorithm to use for the inner loop.
+               Can be "IS" or "GIS".
+    maxiter  : Maximal number of iterations in the outer loop
+    maxiter2 : Maximal number of iterations in the inner loop
+    DEBUG    : Print output for debugging.
+    '''
     nX = PXgSa.shape[0]
     nY = PYgSa.shape[0]
     nS = PXgSa.shape[1]
