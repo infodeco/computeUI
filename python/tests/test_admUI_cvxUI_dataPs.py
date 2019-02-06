@@ -15,7 +15,7 @@ parser.add_argument('cvsfilename', nargs="?", default="",
 parser.add_argument('-nsmax', nargs=1, default=10,
                     help=("The largest cardinality for S "
                           "for which to run the tests."))
-parser.add_argument('-ndist', nargs=1, default="100",
+parser.add_argument('-ndist', nargs=1, default=100,
                     help=("How many distributions to test "
                           "for each value of ns."))
 args = parser.parse_args()
@@ -26,11 +26,10 @@ ndist = args.ndist
 
 logging = cvsfilename != ''
 if logging:
-    cvsfile = open(cvsfilename, "w")
-    cvsfile.write("# ns, admUI_result, admUI_time, "
-                  "cvxopt_result, cvxopt_time\n")
-else:
     print("Logging results to file '{}'".format(cvsfilename))
+    cvsfile = open(cvsfilename, "w")
+    cvsfile.write(
+        "# ns, admUI_result, admUI_time, cvxopt_result, cvxopt_time\n")
 
 # Silence the cvsopt solver:
 cvxopt.solvers.options['show_progress'] = False
@@ -84,7 +83,7 @@ for ns in range(1, nsmax):
 
         # admUI
         start_time = time.time()
-        Q = computeQUI(distSXY=d, DEBUG=True)
+        Q = computeQUI(distSXY=d)  # , DEBUG=True)
         UIX = (dit.shannon.conditional_entropy(Q, 'S', 'Y')
                + dit.shannon.conditional_entropy(Q, 'X', 'Y')
                - dit.shannon.conditional_entropy(Q, 'SX', 'Y'))

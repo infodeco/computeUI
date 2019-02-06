@@ -51,7 +51,7 @@ for d in examples:
     print(d.to_dict())
 # admUI
     start_time = time.time()
-    Q = computeQUI(distSXY=d, DEBUG=True)
+    Q = computeQUI(distSXY=d, DEBUG=False)
     admUI_time = time.time() - start_time
     total_time_admUI += admUI_time
     UIX = (dit.shannon.conditional_entropy(Q, 'S', 'Y')

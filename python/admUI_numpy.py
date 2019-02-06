@@ -26,7 +26,7 @@ def computeQUI_numpy(PXgSa, PYgSa, PS, eps=1e-7, IPmethod="GIS",
     nXY = nX * nY
     rangeS = range(nS)
 
-    PS.reshape(-1)  # make sure that PS is a vector
+    PS = PS.reshape(-1)  # make sure that PS is a vector
 
     eps2 = eps / (20 * nS)
 
