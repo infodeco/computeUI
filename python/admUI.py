@@ -3,7 +3,7 @@ import numpy
 from admUI_numpy import computeQUI_numpy 
 
 def computeQUI(distSXY, eps = 1e-7, DEBUG = False, IPmethod = "GIS",
-                   maxiter = 1000, maxiter2 = 1000):
+               maxiter = 100000, maxiter2 = 100000):
     '''
     Compute an optimizer Q
 

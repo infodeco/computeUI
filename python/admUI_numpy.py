@@ -1,11 +1,7 @@
 import numpy
 
-maxiter = 1000
-maxiter2 = maxiter
-
-
 def computeQUI_numpy(PXgSa, PYgSa, PS, eps=1e-7, IPmethod="GIS",
-                     maxiter=1000, maxiter2=1000, DEBUG=False):
+                     maxiter=100000, maxiter2=100000, DEBUG=False):
     '''
     Compute an optimizer Q
 
@@ -78,7 +74,7 @@ def computeQUI_numpy(PXgSa, PYgSa, PS, eps=1e-7, IPmethod="GIS",
     return QSXYa
 
 
-def Iproj_tech_GIS(PXgsa, PYgsa, RXYa, eps=1e-9, maxiter2=1000, DEBUG=False):
+def Iproj_tech_GIS(PXgsa, PYgsa, RXYa, eps=1e-9, maxiter2=100000, DEBUG=False):
     '''
     Generalized iterative scaling.
     '''
@@ -114,7 +110,7 @@ def Iproj_tech_GIS(PXgsa, PYgsa, RXYa, eps=1e-9, maxiter2=1000, DEBUG=False):
     return b, xindices, yindices
 
 
-def Iproj_tech_IS(PXgsa, PYgsa, RXYa, eps=1e-9, maxiter2=1000, DEBUG=False):
+def Iproj_tech_IS(PXgsa, PYgsa, RXYa, eps=1e-9, maxiter2=100000, DEBUG=False):
     '''
     Iterative scaling.
     '''
