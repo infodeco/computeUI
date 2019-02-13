@@ -1,4 +1,9 @@
-# Generates the datapoints for admUI and cvxopt in Figure 3 of the paper
+# test_cvxUI_dataPs.py
+# This file compares admUI with cvxopt on the distributions
+# in dataPs.mat (see directory /data/).
+# The results are used in Figure 3 of the paper.
+# 
+# Distributed under the terms of the GNU General Public License v3
 from admUI import computeQUI
 import cvxopt_solve
 import dit

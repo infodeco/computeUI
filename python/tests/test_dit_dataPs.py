@@ -1,6 +1,10 @@
-# Generates the data points for dit in Figure 3 of the paper
+# test_dit_dataPs.py
+# This file compares admUI with the algorithm implemented in dit
+# on the distributions in dataPs.mat (see directory /data/).
+# The results are used in Figure 3 of the paper.
+#
+# Distributed under the terms of the GNU General Public License v3
 from admUI import computeQUI
-# from cvxopt_solve import *
 import dit
 import time
 import numpy as np

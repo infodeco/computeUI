@@ -1,3 +1,8 @@
+# test_dit_simple.py
+# This file compares admUI with the algorithm implemented in dit
+# on some simple distributions.
+# 
+# Distributed under the terms of the GNU General Public License v3
 from __future__ import print_function
 import dit
 import time
