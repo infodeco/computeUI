@@ -3,7 +3,8 @@
 This repository provides code to compute the information decomposition defined in [*Quantifying Unique Information*](http://dx.doi.org/10.3390/e16042161).
 The code implements the admUI algorithm proposed by Banerjee, et al. in [*Computing the Unique Information*](https://arxiv.org/abs/1709.07487).
 
-The repository contains two implementation:
+The repository contains two implementations:
+
 - an implementation in Python that works together with the Python package [dit](https://github.com/dit/).
 - an implementation in Matlab. 
 
@@ -13,14 +14,19 @@ The Python implementation requires to have [`numpy`](http://www.numpy.org) insta
 
 ### Installation and Files
 
-To install, make sure sure that Python finds the following files (e.g. by copying the file into the python search path or
-by amending `sys.path`):
+To install, make sure sure that Python finds the following files (e.g. by copying the file into the python search path or by amending `sys.path`):
+
 - `admUI_numpy.py`: This file contains the function `computeQUI_numpy` that implements the alternating divergence minimization algorithm for computing the unique information (admUI).
 - `admUI.py`: This file contains the wrapper function `computeQUI` that allows to work with probability distributions generated using [`dit`](https://github.com/dit/).
 
 The following files contain tests and examples:
-- `test_admUI.py`: testcase comparing the admUI algorithm with the Frank-Wolfe implementation in the [`dit`](https://github.com/dit/) package for some small examples.  On small examples, both algorithms perform well, and the `dit` implementation often beats `admUI`.  The comparison demonstrates that `admUI` achieves the specified error rate (unless one of the loops reaches the maximum number of iterations).
-- `test_admUI_cvxUI_dataPs.py`, `test_dit_dataPs.py`: testcases for generating datapoints to compare the admUI with an implementation [cvxopt_solve](https://github.com/Abzinger/BROJA-Bivariate-Partial_Information_Decomposition/blob/master/Python/cvxopt_solve.py) using the python interior-point solver [CVXOPT](http://cvxopt.org/) and the Frank-Wolfe implementation in the [`dit`](https://github.com/dit/) package.
+
+- `test_dit_simple.py`: testcase comparing the admUI algorithm with the Frank-Wolfe implementation in the [`dit`](https://github.com/dit/) package for some small examples.  On small examples, both algorithms perform well, and the `dit` implementation often beats `admUI`.  The comparison demonstrates that `admUI` achieves the specified error rate (unless one of the loops reaches the maximum number of iterations).
+- `test_cvxUI_dataPs.py`: testcases for generating datapoints to compare the admUI with an implementation [`cvxopt_solve`](https://github.com/Abzinger/BROJA-Bivariate-Partial_Information_Decomposition/blob/master/Python/cvxopt_solve.py) using the python interior-point solver [`CVXOPT`](http://cvxopt.org/).  To run the test, `CVXOPT` needs to be installed, as well as `cvxopt_solve`.  Make sure that the script finds all its dependencies; e.g. use something like:
+```
+$ PYTHONPATH='.:../../BROJA-Bivariate-Partial_Information_Decomposition/Python' python3 tests/test_cvxUI_dataPs.py
+```
+- `test_dit_dataPs.py`: testcases for generating datapoints to compare the admUI with an implementation based on the Frank-Wolfe algorithm from the [`dit`](https://github.com/dit/) package.
 
 ### Example: The AND distribution S = AND(X,Y) using `dit`
 
@@ -31,6 +37,7 @@ import admUI
 import dit
 d = dit.Distribution(['000', '001', '010', '111'], [1. / 4] * 4) 
 d.set_rv_names('SXY')
+print(d)
 ```
 
 The following code computes the unique information of X using the admUI algorithm:
@@ -44,7 +51,8 @@ dit.shannon.conditional_entropy(Q, 'S', 'Y') + dit.shannon.conditional_entropy(Q
 Alternatively, the `dit` package can be used to compute the same quantity:
 
 ```python
-dit.algorithms.pid_broja(d, ['X', 'Y'], 'S') 
+dit_pid = dit.pid.PID_BROJA(d, ['X', 'Y'], 'S')
+print(dit_pid)
 ```
 
 ### Example: The AND distribution with `numpy`
