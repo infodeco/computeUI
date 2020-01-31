@@ -4,8 +4,8 @@ setup(
     name="admUI",
     version="1.0",
     description="This package provides functions to compute the function UI introduced in by Bertschinger et al. [\"Quantifying unique information\", Entropy 2014, 16(4), 2161-2183].",
-    author="Man Foo",
-    author_email="foomail@foo.com",
+    author="Pradeep Banerjee",
+    author_email="Pradeep.Banerjee@mis.mpg.de",
     packages=["admUI"],
     package_dir={"admUI": "python"},
     install_requires=[
