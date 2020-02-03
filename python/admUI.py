@@ -1,6 +1,7 @@
 import dit
 import numpy
-from admUI_numpy import computeQUI_numpy 
+
+from .admUI_numpy import computeQUI_numpy
 
 def computeQUI(distSXY, eps = 1e-7, DEBUG = False, IPmethod = "GIS",
                maxiter = 100000, maxiter2 = 100000):
