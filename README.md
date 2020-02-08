@@ -12,14 +12,20 @@ The repository contains two implementations:
 
 The Python implementation requires to have [`numpy`](http://www.numpy.org) installed.  It can be used standalone, plus there are wrapper functions that allow to work with probability distributions generated using [`dit`](https://github.com/dit/) (version 1.0.0.dev6). The standalone version was tested with Python versions 3.4.2 and 2.7.9.
 
-### Installation and Files
+### Installation
+The package can install via `pip`:
 
-To install, make sure sure that Python finds the following files (e.g. by copying the file into the python search path or by amending `sys.path`):
+```
+pip3 install https://github.com/infodeco/computeUI/archive/master.zip
+```
+
+### Files
+This package contains two important files, namely:
 
 - `admUI_numpy.py`: This file contains the function `computeQUI_numpy` that implements the alternating divergence minimization algorithm for computing the unique information (admUI).
 - `admUI.py`: This file contains the wrapper function `computeQUI` that allows to work with probability distributions generated using [`dit`](https://github.com/dit/).
 
-The following files contain tests and examples:
+The following files are tests and examples:
 
 - `test_dit_simple.py`: testcase comparing the admUI algorithm with the Frank-Wolfe implementation in the [`dit`](https://github.com/dit/) package for some small examples.  On small examples, both algorithms perform well, and the `dit` implementation often beats `admUI`.  The comparison demonstrates that `admUI` achieves the specified error rate (unless one of the loops reaches the maximum number of iterations).
 - `test_cvxUI_dataPs.py`: testcases for generating datapoints to compare the admUI with an implementation [`cvxopt_solve`](https://github.com/Abzinger/BROJA-Bivariate-Partial_Information_Decomposition/blob/master/Python/cvxopt_solve.py) using the python interior-point solver [`CVXOPT`](http://cvxopt.org/).  To run the test, `CVXOPT` needs to be installed, as well as `cvxopt_solve`.  Make sure that the script finds all its dependencies; e.g. use something like:
